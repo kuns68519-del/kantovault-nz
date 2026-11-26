@@ -146,7 +146,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onSelectEra }) => {
           <div className="md:col-span-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-white">NZ Checkout</h4>
             <div className="mt-3 flex flex-wrap gap-2">
-              {['NZ Bank Transfer', 'GST Tax Invoice', 'Studio Pickup', 'Tracked NZ Courier'].map(
+              {['Cash on Delivery', 'Pay on Arrival', 'Studio Pickup', 'Tracked NZ Courier'].map(
                 (pill) => (
                   <span
                     key={pill}

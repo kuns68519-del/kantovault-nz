@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
-  AlertCircle,
-  Building2,
+  Banknote,
   CheckCircle2,
   CreditCard,
   Lock,
@@ -36,11 +35,7 @@ const NZ_REGIONS = [
   'Southland',
 ];
 
-const PAYMENT_OPTIONS = [
-  'NZ Bank Transfer / Direct Deposit (Instant Tax Invoice)',
-  'Auckland Studio Pay on Pickup (EFTPOS / Card)',
-  'Online Card / Afterpay Gateway',
-] as const;
+const PAYMENT_OPTIONS = STORE_CONFIG.paymentMethods;
 
 export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   isOpen,
@@ -57,7 +52,6 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const [region, setRegion] = useState('Auckland');
   const [courierMethod, setCourierMethod] = useState('Tracked NZ Courier (1–3 days)');
   const [paymentMethod, setPaymentMethod] = useState<string>(PAYMENT_OPTIONS[0]);
-  const [gatewayError, setGatewayError] = useState<string | null>(null);
   const [confirmation, setConfirmation] = useState<OrderSummary | null>(null);
 
   if (!isOpen) return null;
@@ -71,17 +65,9 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
       : STORE_CONFIG.shipping.flatRateNzd;
   const total = subtotal + shipping;
   const gstIncluded = Math.round((total * 3) / 23);
-  const isGatewaySelected = paymentMethod === 'Online Card / Afterpay Gateway';
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (isGatewaySelected) {
-      setGatewayError(
-        'Live Card / Afterpay gateway keys are not yet attached on this storefront. Please select NZ Bank Transfer (Instant Tax Invoice) or Auckland Studio Pay on Pickup to complete your order.'
-      );
-      return;
-    }
-    setGatewayError(null);
     const orderNum = `KV-NZ-2026-${Math.floor(1000 + Math.random() * 9000)}`;
     const summary: OrderSummary = {
       orderNumber: orderNum,
@@ -105,7 +91,6 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
   const handleClose = () => {
     setConfirmation(null);
-    setGatewayError(null);
     onClose();
   };
 
@@ -139,13 +124,13 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
               <p className="mt-4 font-mono text-xs font-bold uppercase tracking-widest text-[#9B6D16]">
                 {confirmation.paymentMethod.includes('Pickup')
                   ? 'Reserved for Auckland Studio Pickup'
-                  : 'Tax Invoice Issued • Awaiting Bank Transfer'}
+                  : 'Cash on Delivery Order Confirmed • Pay on Arrival'}
               </p>
               <h2 className="mt-1 font-serif text-3xl font-semibold text-[#111318]">
                 Ngā mihi, {confirmation.customerName}
               </h2>
               <p className="mx-auto mt-2 max-w-lg text-sm text-[#4B5563]">
-                Order <strong className="font-mono">{confirmation.orderNumber}</strong> is reserved
+                Order <strong className="font-mono">{confirmation.orderNumber}</strong> is queued
                 at {STORE_CONFIG.legalName} ({confirmation.placedAt}) for dispatch to{' '}
                 <strong>{confirmation.region}</strong>.
               </p>
@@ -187,6 +172,10 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   <span className="font-semibold text-[#111318]">{confirmation.courierMethod}</span>
                 </div>
                 <div className="flex justify-between text-[#4B5563]">
+                  <span>Payment Method</span>
+                  <span className="font-semibold text-[#111318]">{confirmation.paymentMethod}</span>
+                </div>
+                <div className="flex justify-between text-[#4B5563]">
                   <span>Shipping</span>
                   <span className="font-mono font-semibold text-[#15803D]">
                     {confirmation.shippingNzd === 0 ? 'FREE' : formatNzd(confirmation.shippingNzd)}
@@ -199,34 +188,33 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   </span>
                 </div>
                 <div className="flex justify-between border-t border-[#F3F1EC] pt-2.5 text-sm font-bold text-[#111318]">
-                  <span>Total Due (NZD Incl. GST)</span>
+                  <span>Total Payable on Delivery / Pickup (NZD Incl. GST)</span>
                   <span className="font-mono">{formatNzd(confirmation.totalNzd)}</span>
                 </div>
               </div>
 
-              {confirmation.paymentMethod.includes('Bank Transfer') ? (
-                <div className="mt-4 rounded-xl border border-[#E5DEC9] bg-[#FAF7EE] p-3.5 text-[#374151]">
-                  <div className="flex items-center gap-1.5 font-semibold text-[#7A5410]">
-                    <Building2 className="h-4 w-4 text-[#C9922B]" />
-                    NZ Bank Transfer Payment Instructions
-                  </div>
-                  <div className="mt-2 grid gap-1 font-mono text-[11px]">
-                    <div>Bank: {STORE_CONFIG.bankTransfer.bankName}</div>
-                    <div>Account Name: {STORE_CONFIG.bankTransfer.accountName}</div>
-                    <div>Account Number: {STORE_CONFIG.bankTransfer.accountNumber}</div>
-                    <div>
-                      Reference: <strong>{confirmation.orderNumber}</strong>
-                    </div>
-                  </div>
-                </div>
-              ) : (
+              {confirmation.paymentMethod.includes('Pickup') ? (
                 <div className="mt-4 rounded-xl border border-[#ECEAE4] bg-[#FAFAF8] p-3.5 text-[#374151]">
-                  Pay on collection via EFTPOS or card at{' '}
+                  Pay <strong>{formatNzd(confirmation.totalNzd)}</strong> (NZD, GST incl.) via Cash
+                  or EFTPOS upon collection at{' '}
                   <strong>
                     {STORE_CONFIG.address.street}, {STORE_CONFIG.address.city}{' '}
                     {STORE_CONFIG.address.postcode}
                   </strong>{' '}
                   ({STORE_CONFIG.hours}).
+                </div>
+              ) : (
+                <div className="mt-4 rounded-xl border border-[#E5DEC9] bg-[#FAF7EE] p-3.5 text-[#374151]">
+                  <div className="flex items-center gap-1.5 font-semibold text-[#7A5410]">
+                    <Banknote className="h-4 w-4 text-[#C9922B]" />
+                    Cash on Delivery Instructions
+                  </div>
+                  <p className="mt-1.5 leading-relaxed">
+                    Payment of <strong>{formatNzd(confirmation.totalNzd)}</strong> (NZD, GST incl.)
+                    will be collected in cash upon delivery at your New Zealand address. Please keep
+                    order reference <strong className="font-mono">{confirmation.orderNumber}</strong>{' '}
+                    handy for your courier.
+                  </p>
                 </div>
               )}
             </div>
@@ -416,10 +404,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                             type="radio"
                             name="payment"
                             checked={paymentMethod === method}
-                            onChange={() => {
-                              setPaymentMethod(method);
-                              setGatewayError(null);
-                            }}
+                            onChange={() => setPaymentMethod(method)}
                             className="mt-0.5 accent-[#C9922B]"
                           />
                           <span className="font-medium text-[#111318]">{method}</span>
@@ -428,23 +413,6 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                     </div>
                   </div>
                 </div>
-
-                {isGatewaySelected && (
-                  <div className="flex items-start gap-2.5 rounded-2xl border border-[#F59E0B]/40 bg-[#FEF3C7]/70 p-3.5 text-xs text-[#78350F]">
-                    <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-[#D97706]" />
-                    <span>
-                      Online Card / Afterpay gateway keys are not yet attached in this environment.
-                      Select <strong>NZ Bank Transfer (Instant Tax Invoice)</strong> or{' '}
-                      <strong>Auckland Studio Pay on Pickup</strong> to complete your order now.
-                    </span>
-                  </div>
-                )}
-
-                {gatewayError && (
-                  <div className="rounded-xl border border-[#DC2626]/30 bg-[#FEF2F2] p-3 text-xs font-medium text-[#B91C1C]">
-                    {gatewayError}
-                  </div>
-                )}
               </div>
 
               {/* Order Summary Sidebar */}
@@ -489,17 +457,16 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
                   <button
                     type="submit"
-                    disabled={isGatewaySelected}
-                    className="mt-5 w-full rounded-full bg-[#111318] px-5 py-3.5 text-sm font-semibold text-white transition-all hover:bg-[#C9922B] hover:text-[#111318] disabled:cursor-not-allowed disabled:opacity-45"
+                    className="mt-5 w-full rounded-full bg-[#111318] px-5 py-3.5 text-sm font-semibold text-white transition-all hover:bg-[#C9922B] hover:text-[#111318]"
                   >
                     {paymentMethod.includes('Pickup')
                       ? `Reserve Pickup Order • ${formatNzd(total)}`
-                      : `Place Order & Issue Tax Invoice • ${formatNzd(total)}`}
+                      : `Place Cash on Delivery Order • ${formatNzd(total)}`}
                   </button>
 
                   <p className="mt-3 flex items-center justify-center gap-1.5 text-[11px] text-[#6B7280]">
                     <ShieldCheck className="h-3.5 w-3.5 text-[#C9922B]" />
-                    Tracked delivery across New Zealand
+                    Pay on arrival • Tracked delivery across New Zealand
                   </p>
                 </div>
               </div>

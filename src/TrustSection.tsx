@@ -14,8 +14,8 @@ const PILLARS = [
   },
   {
     icon: Lock,
-    title: 'Secure NZ Checkout',
-    body: 'Pay smoothly in New Zealand Dollars using Visa, Mastercard, NZ Bank Transfer / POLi, or Afterpay with 15% GST included.',
+    title: 'Cash on Delivery & Pickup',
+    body: 'Pay smoothly in New Zealand Dollars via Cash on Delivery on arrival or Cash / EFTPOS at our Auckland Studio, with 15% GST included.',
   },
   {
     icon: PackageCheck,

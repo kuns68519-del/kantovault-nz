@@ -319,9 +319,10 @@ export const PolicyPages: React.FC<PolicyPagesProps> = ({ path, onNavigate }) =>
                 2. Orders &amp; Payment
               </h2>
               <p>
-                Orders can be placed using NZ Bank Transfer (Direct Deposit with GST Tax Invoice)
-                or Pay on Pickup at our Auckland Studio. Bank-transfer orders are held for 48 hours
-                awaiting cleared funds before dispatch.
+                Orders can be placed using <strong>Cash on Delivery (Pay on Arrival)</strong>{' '}
+                anywhere in New Zealand or <strong>Auckland Studio Pay on Pickup (Cash / EFTPOS)</strong>.
+                Payment is collected upon delivery or collection, and a GST Tax Invoice is issued
+                with every order.
               </p>
             </section>
 

@@ -29,9 +29,8 @@ export const STORE_CONFIG = {
     restockingFeeNzd: 0,
     refundDays: '3–5 business days',
   },
-  bankTransfer: {
-    bankName: 'ANZ Bank New Zealand',
-    accountName: 'KantoVault NZ Studio',
-    accountNumber: '06-0158-0948271-00',
-  },
+  paymentMethods: [
+    'Cash on Delivery (Pay on Arrival)',
+    'Auckland Studio Pay on Pickup (Cash / EFTPOS)',
+  ],
 } as const;
