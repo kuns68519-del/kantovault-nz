@@ -7,6 +7,7 @@ interface ProductCardProps {
   product: Product;
   index: number;
   isWatched: boolean;
+  onNavigate: (path: string) => void;
   onToggleWatchlist: (id: string) => void;
   onInspect: (product: Product) => void;
   onAddToCart: (product: Product, sourceEl: HTMLElement | null) => void;
@@ -16,6 +17,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   product,
   index,
   isWatched,
+  onNavigate,
   onToggleWatchlist,
   onInspect,
   onAddToCart,
@@ -67,15 +69,23 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     el.style.setProperty('--ry', '0deg');
   };
 
+  const productHref = `/product/${product.id}`;
   const isFeaturedBadge =
     product.badge === 'Best Seller' ||
     product.badge === 'Limited Run' ||
     product.badge === 'Staff Pick';
 
+  const handleOpenProductPage = (e: React.MouseEvent) => {
+    if (!e.metaKey && !e.ctrlKey) {
+      e.preventDefault();
+      onNavigate(productHref);
+    }
+  };
+
   return (
     <article
       ref={cardRef}
-      onClick={() => onInspect(product)}
+      onClick={() => onNavigate(productHref)}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{ animationDelay: `${(index % 4) * 80}ms` }}
@@ -114,50 +124,61 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       </div>
 
       {/* Product Photography Container */}
-      <div
-        ref={imgWrapRef}
-        className="relative mx-4 mt-2 flex aspect-square items-center justify-center overflow-hidden rounded-xl border border-[#F5F3EE] bg-[#F4F1EA]"
+      <a
+        href={productHref}
+        onClick={handleOpenProductPage}
+        className="relative mx-4 mt-2 block aspect-square overflow-hidden rounded-xl border border-[#F5F3EE] bg-[#F4F1EA]"
       >
-        {!imgFailed ? (
-          <>
-            <img
-              src={product.imageUrl}
-              alt={product.name}
-              loading="lazy"
-              referrerPolicy="no-referrer"
-              onError={(e) => {
-                const img = e.currentTarget;
-                if (!usingFallback && product.fallbackImageUrl !== product.imageUrl) {
-                  setUsingFallback(true);
-                  img.src = product.fallbackImageUrl;
-                } else {
-                  setImgFailed(true);
+        <div ref={imgWrapRef} className="flex h-full w-full items-center justify-center">
+          {!imgFailed ? (
+            <>
+              <img
+                src={product.imageUrl}
+                alt={product.name}
+                loading="lazy"
+                referrerPolicy="no-referrer"
+                onError={(e) => {
+                  const img = e.currentTarget;
+                  if (!usingFallback && product.fallbackImageUrl !== product.imageUrl) {
+                    setUsingFallback(true);
+                    img.src = product.fallbackImageUrl;
+                  } else {
+                    setImgFailed(true);
+                  }
+                }}
+                className={
+                  usingFallback
+                    ? 'h-full w-full bg-white object-contain p-5 transition-transform duration-700 group-hover:scale-110'
+                    : 'h-full w-full object-cover transition-transform duration-700 group-hover:scale-110'
                 }
-              }}
-              className={
-                usingFallback
-                  ? 'h-full w-full bg-white object-contain p-5 transition-transform duration-700 group-hover:scale-110'
-                  : 'h-full w-full object-cover transition-transform duration-700 group-hover:scale-110'
-              }
-            />
-            <span
-              aria-hidden="true"
-              className="holo-sheen pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-            />
-          </>
-        ) : (
-          <div className="flex flex-col items-center justify-center text-center text-[#9B6D16]">
-            <ShieldCheck className="h-10 w-10 opacity-70" />
-            <span className="mt-2 font-mono text-xs font-semibold">{product.sku}</span>
-          </div>
-        )}
+              />
+              <span
+                aria-hidden="true"
+                className="holo-sheen pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+              />
+            </>
+          ) : (
+            <div className="flex flex-col items-center justify-center text-center text-[#9B6D16]">
+              <ShieldCheck className="h-10 w-10 opacity-70" />
+              <span className="mt-2 font-mono text-xs font-semibold">{product.sku}</span>
+            </div>
+          )}
+        </div>
 
-        {/* Quick Inspect Hover Pill */}
-        <span className="pointer-events-none absolute bottom-2.5 right-2.5 inline-flex items-center gap-1 rounded-full bg-[#111318]/88 px-2.5 py-1 text-[10px] font-semibold text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+        {/* Quick Inspect Modal Trigger Pill */}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onInspect(product);
+          }}
+          className="absolute bottom-2.5 right-2.5 inline-flex items-center gap-1 rounded-full bg-[#111318]/88 px-2.5 py-1 text-[10px] font-semibold text-white opacity-0 transition-opacity duration-200 hover:bg-[#111318] group-hover:opacity-100"
+        >
           <Eye className="h-3 w-3 text-[#E5B85B]" />
           Inspect
-        </span>
-      </div>
+        </button>
+      </a>
 
       {/* Product Metadata */}
       <div className="flex flex-1 flex-col px-4 pb-4 pt-3.5">
@@ -174,7 +195,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </div>
 
         <h3 className="mt-1 line-clamp-2 min-h-[2.6rem] text-sm font-semibold leading-snug text-[#111318] transition-colors group-hover:text-[#8F6311]">
-          {product.name}
+          <a href={productHref} onClick={handleOpenProductPage} className="hover:underline">
+            {product.name}
+          </a>
         </h3>
 
         <p className="mt-1 line-clamp-1 text-xs text-[#6B7280]">

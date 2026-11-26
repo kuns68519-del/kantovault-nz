@@ -9,6 +9,7 @@ interface HeaderProps {
   cartPulse: number;
   watchlistCount: number;
   showWatchlistOnly: boolean;
+  onNavigate: (path: string) => void;
   onToggleWatchlistFilter: () => void;
   onOpenCart: () => void;
   onSelectEra: (era: Era | 'All') => void;
@@ -20,13 +21,17 @@ export const Header: React.FC<HeaderProps> = ({
   cartPulse,
   watchlistCount,
   showWatchlistOnly,
+  onNavigate,
   onToggleWatchlistFilter,
   onOpenCart,
   onSelectEra,
 }) => {
-  const scrollToSection = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  const goHomeAndScroll = (era?: Era | 'All') => {
+    if (era !== undefined) onSelectEra(era);
+    onNavigate('/');
+    window.setTimeout(() => {
+      document.getElementById('vault-catalog')?.scrollIntoView({ behavior: 'smooth' });
+    }, 60);
   };
 
   return (
@@ -49,10 +54,12 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand Logo */}
         <a
-          href="#top"
+          href="/"
           onClick={(e) => {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (!e.metaKey && !e.ctrlKey) {
+              e.preventDefault();
+              onNavigate('/');
+            }
           }}
           className="group flex items-center gap-3 focus:outline-none"
         >
@@ -79,44 +86,52 @@ export const Header: React.FC<HeaderProps> = ({
         </a>
 
         {/* Navigation Links */}
-        <nav className="hidden items-center gap-7 text-sm font-medium text-[#4B5563] md:flex">
+        <nav className="hidden items-center gap-6 text-sm font-medium text-[#4B5563] lg:flex">
           <button
             type="button"
-            onClick={() => {
-              onSelectEra('All');
-              scrollToSection('vault-catalog');
-            }}
+            onClick={() => goHomeAndScroll('All')}
             className="transition-colors hover:text-[#111318]"
           >
             Shop All
           </button>
           <button
             type="button"
-            onClick={() => {
-              onSelectEra('City & Vehicles');
-              scrollToSection('vault-catalog');
-            }}
+            onClick={() => goHomeAndScroll('City & Vehicles')}
             className="transition-colors hover:text-[#111318]"
           >
             City &amp; Vehicles
           </button>
           <button
             type="button"
-            onClick={() => {
-              onSelectEra('Architecture & Landmarks');
-              scrollToSection('vault-catalog');
-            }}
+            onClick={() => goHomeAndScroll('Architecture & Landmarks')}
             className="transition-colors hover:text-[#111318]"
           >
             Architecture
           </button>
-          <button
-            type="button"
-            onClick={() => scrollToSection('authentication')}
+          <a
+            href="/shipping-returns"
+            onClick={(e) => {
+              if (!e.metaKey && !e.ctrlKey) {
+                e.preventDefault();
+                onNavigate('/shipping-returns');
+              }
+            }}
             className="transition-colors hover:text-[#111318]"
           >
-            Why KantoVault
-          </button>
+            Shipping &amp; Returns
+          </a>
+          <a
+            href="/contact"
+            onClick={(e) => {
+              if (!e.metaKey && !e.ctrlKey) {
+                e.preventDefault();
+                onNavigate('/contact');
+              }
+            }}
+            className="transition-colors hover:text-[#111318]"
+          >
+            Contact
+          </a>
         </nav>
 
         {/* Actions: Watchlist + Cart */}
@@ -125,7 +140,7 @@ export const Header: React.FC<HeaderProps> = ({
             type="button"
             onClick={() => {
               onToggleWatchlistFilter();
-              scrollToSection('vault-catalog');
+              goHomeAndScroll();
             }}
             className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-2 text-xs font-semibold transition-all ${
               showWatchlistOnly

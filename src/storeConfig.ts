@@ -1,0 +1,38 @@
+export const STORE_CONFIG = {
+  storeName: 'KantoVault NZ',
+  legalName: 'KantoVault NZ Studio',
+  domain: 'https://www.kantovault.store',
+  supportEmail: 'support@kantovault.store',
+  supportPhone: '+64 9 889 4210',
+  address: {
+    street: '42 Ponsonby Road, Grey Lynn',
+    city: 'Auckland',
+    region: 'Auckland',
+    postcode: '1021',
+    country: 'New Zealand',
+    countryCode: 'NZ',
+  },
+  hours: 'Monday – Friday, 9:00 AM – 5:00 PM NZST',
+  shipping: {
+    freeThresholdNzd: 100,
+    flatRateNzd: 10,
+    currency: 'NZD',
+    handlingDaysMin: 0,
+    handlingDaysMax: 1,
+    transitDaysMin: 1,
+    transitDaysMax: 3,
+    carrier: 'NZ Post Tracked Courier',
+    cutoffTime: '2:00 PM NZT',
+  },
+  returns: {
+    windowDays: 30,
+    condition: 'Unopened and in original sealed retail packaging',
+    restockingFeeNzd: 0,
+    refundDays: '3–5 business days',
+  },
+  bankTransfer: {
+    bankName: 'ANZ Bank New Zealand',
+    accountName: 'KantoVault NZ Studio',
+    accountNumber: '06-0158-0948271-00',
+  },
+} as const;

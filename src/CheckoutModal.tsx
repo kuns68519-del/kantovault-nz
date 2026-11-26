@@ -1,7 +1,19 @@
 import React, { useState } from 'react';
-import { CheckCircle2, CreditCard, Lock, MapPin, ShieldCheck, Truck, X } from 'lucide-react';
+import {
+  AlertCircle,
+  Building2,
+  CheckCircle2,
+  CreditCard,
+  Lock,
+  MapPin,
+  Printer,
+  ShieldCheck,
+  Truck,
+  X,
+} from 'lucide-react';
 import { CartItem, OrderSummary } from './types';
 import { formatNzd } from './products';
+import { STORE_CONFIG } from './storeConfig';
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -24,6 +36,12 @@ const NZ_REGIONS = [
   'Southland',
 ];
 
+const PAYMENT_OPTIONS = [
+  'NZ Bank Transfer / Direct Deposit (Instant Tax Invoice)',
+  'Auckland Studio Pay on Pickup (EFTPOS / Card)',
+  'Online Card / Afterpay Gateway',
+] as const;
+
 export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   isOpen,
   items,
@@ -38,18 +56,32 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const [postcode, setPostcode] = useState('');
   const [region, setRegion] = useState('Auckland');
   const [courierMethod, setCourierMethod] = useState('Tracked NZ Courier (1–3 days)');
-  const [paymentMethod, setPaymentMethod] = useState('Credit / Debit Card');
+  const [paymentMethod, setPaymentMethod] = useState<string>(PAYMENT_OPTIONS[0]);
+  const [gatewayError, setGatewayError] = useState<string | null>(null);
   const [confirmation, setConfirmation] = useState<OrderSummary | null>(null);
 
   if (!isOpen) return null;
 
   const subtotal = items.reduce((s, i) => s + i.product.priceNzd * i.quantity, 0);
   const shipping =
-    courierMethod === 'Auckland Studio Pickup' || subtotal >= 100 || subtotal === 0 ? 0 : 10;
+    courierMethod === 'Auckland Studio Pickup' ||
+    subtotal >= STORE_CONFIG.shipping.freeThresholdNzd ||
+    subtotal === 0
+      ? 0
+      : STORE_CONFIG.shipping.flatRateNzd;
   const total = subtotal + shipping;
+  const gstIncluded = Math.round((total * 3) / 23);
+  const isGatewaySelected = paymentMethod === 'Online Card / Afterpay Gateway';
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (isGatewaySelected) {
+      setGatewayError(
+        'Live Card / Afterpay gateway keys are not yet attached on this storefront. Please select NZ Bank Transfer (Instant Tax Invoice) or Auckland Studio Pay on Pickup to complete your order.'
+      );
+      return;
+    }
+    setGatewayError(null);
     const orderNum = `KV-NZ-2026-${Math.floor(1000 + Math.random() * 9000)}`;
     const summary: OrderSummary = {
       orderNumber: orderNum,
@@ -73,12 +105,13 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
   const handleClose = () => {
     setConfirmation(null);
+    setGatewayError(null);
     onClose();
   };
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[#111318]/70 p-4 backdrop-blur-xs"
+      className="animate-backdrop-in fixed inset-0 z-50 flex items-center justify-center bg-[#111318]/70 p-4 backdrop-blur-xs"
       onClick={handleClose}
       role="dialog"
       aria-modal="true"
@@ -98,49 +131,123 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
         </button>
 
         {confirmation ? (
-          <div className="py-4 text-center">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#16A34A]/12 text-[#16A34A]">
-              <CheckCircle2 className="h-8 w-8" />
+          <div className="py-2">
+            <div className="text-center">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#16A34A]/12 text-[#16A34A]">
+                <CheckCircle2 className="h-8 w-8" />
+              </div>
+              <p className="mt-4 font-mono text-xs font-bold uppercase tracking-widest text-[#9B6D16]">
+                {confirmation.paymentMethod.includes('Pickup')
+                  ? 'Reserved for Auckland Studio Pickup'
+                  : 'Tax Invoice Issued • Awaiting Bank Transfer'}
+              </p>
+              <h2 className="mt-1 font-serif text-3xl font-semibold text-[#111318]">
+                Ngā mihi, {confirmation.customerName}
+              </h2>
+              <p className="mx-auto mt-2 max-w-lg text-sm text-[#4B5563]">
+                Order <strong className="font-mono">{confirmation.orderNumber}</strong> is reserved
+                at {STORE_CONFIG.legalName} ({confirmation.placedAt}) for dispatch to{' '}
+                <strong>{confirmation.region}</strong>.
+              </p>
             </div>
-            <p className="mt-4 font-mono text-xs font-bold uppercase tracking-widest text-[#9B6D16]">
-              Order Confirmed
-            </p>
-            <h2 className="mt-1 font-serif text-3xl font-semibold text-[#111318]">
-              Ngā mihi, {confirmation.customerName}
-            </h2>
-            <p className="mx-auto mt-2 max-w-md text-sm text-[#4B5563]">
-              Your order <strong className="font-mono">{confirmation.orderNumber}</strong> is being
-              packed at our Auckland studio for dispatch to <strong>{confirmation.region}</strong>.
-            </p>
 
-            <div className="mx-auto mt-6 max-w-lg rounded-2xl border border-[#ECEAE4] bg-white p-5 text-left text-xs">
-              <div className="flex justify-between border-b border-[#F3F1EC] pb-2.5">
-                <span className="text-[#6B7280]">Order Reference</span>
-                <span className="font-mono font-bold text-[#111318]">
+            {/* GST Tax Invoice Card */}
+            <div className="mx-auto mt-6 max-w-xl rounded-2xl border border-[#ECEAE4] bg-white p-5 text-xs">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#F3F1EC] pb-3">
+                <div>
+                  <div className="font-serif text-base font-semibold text-[#111318]">
+                    NZ GST Tax Invoice
+                  </div>
+                  <div className="text-[11px] text-[#6B7280]">
+                    {STORE_CONFIG.legalName} • {STORE_CONFIG.address.street},{' '}
+                    {STORE_CONFIG.address.city}
+                  </div>
+                </div>
+                <span className="rounded-full bg-[#FAF8F3] px-3 py-1 font-mono font-bold text-[#111318]">
                   {confirmation.orderNumber}
                 </span>
               </div>
-              <div className="flex justify-between border-b border-[#F3F1EC] py-2.5">
-                <span className="text-[#6B7280]">Dispatch Method</span>
-                <span className="font-semibold text-[#111318]">{confirmation.courierMethod}</span>
+
+              <ul className="mt-3 space-y-1.5 border-b border-[#F3F1EC] pb-3">
+                {confirmation.items.map(({ product, quantity }) => (
+                  <li key={product.id} className="flex justify-between text-[#374151]">
+                    <span>
+                      <strong className="font-mono">{quantity}×</strong> {product.name} ({product.sku})
+                    </span>
+                    <span className="font-mono font-semibold text-[#111318]">
+                      {formatNzd(product.priceNzd * quantity)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-3 space-y-1.5">
+                <div className="flex justify-between text-[#4B5563]">
+                  <span>Dispatch Method</span>
+                  <span className="font-semibold text-[#111318]">{confirmation.courierMethod}</span>
+                </div>
+                <div className="flex justify-between text-[#4B5563]">
+                  <span>Shipping</span>
+                  <span className="font-mono font-semibold text-[#15803D]">
+                    {confirmation.shippingNzd === 0 ? 'FREE' : formatNzd(confirmation.shippingNzd)}
+                  </span>
+                </div>
+                <div className="flex justify-between text-[#6B7280]">
+                  <span>15% NZ GST (included)</span>
+                  <span className="font-mono">
+                    {formatNzd(Math.round((confirmation.totalNzd * 3) / 23))}
+                  </span>
+                </div>
+                <div className="flex justify-between border-t border-[#F3F1EC] pt-2.5 text-sm font-bold text-[#111318]">
+                  <span>Total Due (NZD Incl. GST)</span>
+                  <span className="font-mono">{formatNzd(confirmation.totalNzd)}</span>
+                </div>
               </div>
-              <div className="flex justify-between border-b border-[#F3F1EC] py-2.5">
-                <span className="text-[#6B7280]">Payment</span>
-                <span className="font-semibold text-[#111318]">{confirmation.paymentMethod}</span>
-              </div>
-              <div className="flex justify-between pt-3 text-sm font-bold text-[#111318]">
-                <span>Total Paid (Incl. GST)</span>
-                <span className="font-mono">{formatNzd(confirmation.totalNzd)}</span>
-              </div>
+
+              {confirmation.paymentMethod.includes('Bank Transfer') ? (
+                <div className="mt-4 rounded-xl border border-[#E5DEC9] bg-[#FAF7EE] p-3.5 text-[#374151]">
+                  <div className="flex items-center gap-1.5 font-semibold text-[#7A5410]">
+                    <Building2 className="h-4 w-4 text-[#C9922B]" />
+                    NZ Bank Transfer Payment Instructions
+                  </div>
+                  <div className="mt-2 grid gap-1 font-mono text-[11px]">
+                    <div>Bank: {STORE_CONFIG.bankTransfer.bankName}</div>
+                    <div>Account Name: {STORE_CONFIG.bankTransfer.accountName}</div>
+                    <div>Account Number: {STORE_CONFIG.bankTransfer.accountNumber}</div>
+                    <div>
+                      Reference: <strong>{confirmation.orderNumber}</strong>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="mt-4 rounded-xl border border-[#ECEAE4] bg-[#FAFAF8] p-3.5 text-[#374151]">
+                  Pay on collection via EFTPOS or card at{' '}
+                  <strong>
+                    {STORE_CONFIG.address.street}, {STORE_CONFIG.address.city}{' '}
+                    {STORE_CONFIG.address.postcode}
+                  </strong>{' '}
+                  ({STORE_CONFIG.hours}).
+                </div>
+              )}
             </div>
 
-            <button
-              type="button"
-              onClick={handleClose}
-              className="mt-6 rounded-full bg-[#111318] px-7 py-3 text-sm font-semibold text-white hover:bg-[#1F242D]"
-            >
-              Return to KantoVault NZ
-            </button>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+              <button
+                type="button"
+                onClick={() => window.print()}
+                className="inline-flex items-center gap-2 rounded-full border border-[#D8D3C8] bg-white px-5 py-3 text-xs font-semibold text-[#111318] hover:border-[#C9922B]"
+              >
+                <Printer className="h-4 w-4 text-[#C9922B]" />
+                Print / Save GST Tax Invoice
+              </button>
+              <button
+                type="button"
+                onClick={handleClose}
+                className="rounded-full bg-[#111318] px-7 py-3 text-sm font-semibold text-white hover:bg-[#1F242D]"
+              >
+                Return to KantoVault NZ
+              </button>
+            </div>
           </div>
         ) : (
           <form onSubmit={handleSubmit}>
@@ -300,26 +407,44 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                       Payment Method
                     </h3>
                     <div className="mt-2.5 space-y-2 text-xs">
-                      {['Credit / Debit Card', 'NZ Bank Transfer / POLi', 'Afterpay (4x NZD)'].map(
-                        (method) => (
-                          <label
-                            key={method}
-                            className="flex cursor-pointer items-center gap-2 rounded-xl border border-[#ECEAE4] p-2 hover:border-[#C9922B]"
-                          >
-                            <input
-                              type="radio"
-                              name="payment"
-                              checked={paymentMethod === method}
-                              onChange={() => setPaymentMethod(method)}
-                              className="accent-[#C9922B]"
-                            />
-                            <span className="font-medium text-[#111318]">{method}</span>
-                          </label>
-                        )
-                      )}
+                      {PAYMENT_OPTIONS.map((method) => (
+                        <label
+                          key={method}
+                          className="flex cursor-pointer items-start gap-2 rounded-xl border border-[#ECEAE4] p-2 hover:border-[#C9922B]"
+                        >
+                          <input
+                            type="radio"
+                            name="payment"
+                            checked={paymentMethod === method}
+                            onChange={() => {
+                              setPaymentMethod(method);
+                              setGatewayError(null);
+                            }}
+                            className="mt-0.5 accent-[#C9922B]"
+                          />
+                          <span className="font-medium text-[#111318]">{method}</span>
+                        </label>
+                      ))}
                     </div>
                   </div>
                 </div>
+
+                {isGatewaySelected && (
+                  <div className="flex items-start gap-2.5 rounded-2xl border border-[#F59E0B]/40 bg-[#FEF3C7]/70 p-3.5 text-xs text-[#78350F]">
+                    <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-[#D97706]" />
+                    <span>
+                      Online Card / Afterpay gateway keys are not yet attached in this environment.
+                      Select <strong>NZ Bank Transfer (Instant Tax Invoice)</strong> or{' '}
+                      <strong>Auckland Studio Pay on Pickup</strong> to complete your order now.
+                    </span>
+                  </div>
+                )}
+
+                {gatewayError && (
+                  <div className="rounded-xl border border-[#DC2626]/30 bg-[#FEF2F2] p-3 text-xs font-medium text-[#B91C1C]">
+                    {gatewayError}
+                  </div>
+                )}
               </div>
 
               {/* Order Summary Sidebar */}
@@ -352,6 +477,10 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                         {shipping === 0 ? 'FREE' : formatNzd(shipping)}
                       </span>
                     </div>
+                    <div className="flex justify-between text-[#6B7280]">
+                      <span>15% NZ GST (included)</span>
+                      <span className="font-mono">{formatNzd(gstIncluded)}</span>
+                    </div>
                     <div className="flex justify-between border-t border-[#F0EDE6] pt-2.5 text-sm font-bold text-[#111318]">
                       <span>Total NZD (Incl. GST)</span>
                       <span className="font-mono text-base">{formatNzd(total)}</span>
@@ -360,9 +489,12 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
                   <button
                     type="submit"
-                    className="mt-5 w-full rounded-full bg-[#111318] px-5 py-3.5 text-sm font-semibold text-white transition-all hover:bg-[#C9922B] hover:text-[#111318]"
+                    disabled={isGatewaySelected}
+                    className="mt-5 w-full rounded-full bg-[#111318] px-5 py-3.5 text-sm font-semibold text-white transition-all hover:bg-[#C9922B] hover:text-[#111318] disabled:cursor-not-allowed disabled:opacity-45"
                   >
-                    Confirm &amp; Pay {formatNzd(total)}
+                    {paymentMethod.includes('Pickup')
+                      ? `Reserve Pickup Order • ${formatNzd(total)}`
+                      : `Place Order & Issue Tax Invoice • ${formatNzd(total)}`}
                   </button>
 
                   <p className="mt-3 flex items-center justify-center gap-1.5 text-[11px] text-[#6B7280]">

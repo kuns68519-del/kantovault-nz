@@ -16,6 +16,7 @@ interface ProductModalProps {
   product: Product | null;
   isWatched: boolean;
   onClose: () => void;
+  onNavigate: (path: string) => void;
   onToggleWatchlist: (id: string) => void;
   onAddToCart: (product: Product, quantity: number, sourceEl: HTMLElement | null) => void;
 }
@@ -24,6 +25,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
   product,
   isWatched,
   onClose,
+  onNavigate,
   onToggleWatchlist,
   onAddToCart,
 }) => {
@@ -94,9 +96,19 @@ export const ProductModal: React.FC<ProductModalProps> = ({
                 <ShieldCheck className="h-4 w-4 text-[#C9922B]" />
                 Brand New • Sealed Box
               </span>
-              <span className="font-mono text-[11px] font-semibold text-[#4B5563]">
-                {product.sku}
-              </span>
+              <a
+                href={`/product/${product.id}`}
+                onClick={(e) => {
+                  if (!e.metaKey && !e.ctrlKey) {
+                    e.preventDefault();
+                    onClose();
+                    onNavigate(`/product/${product.id}`);
+                  }
+                }}
+                className="font-mono text-[11px] font-semibold text-[#9B6D16] underline hover:text-[#111318]"
+              >
+                {product.sku} • Full Page
+              </a>
             </div>
           </div>
 
