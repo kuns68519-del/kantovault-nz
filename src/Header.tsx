@@ -31,15 +31,15 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="sticky top-0 z-40 border-b border-[#ECEAE4] bg-[#FAFAF8]/92 backdrop-blur-md">
-      {/* Top NZ Collector Announcement Bar */}
+      {/* Top NZ Announcement Bar */}
       <div className="bg-[#111318] px-4 py-2 text-center text-[11px] font-medium tracking-wide text-[#F3EFE6] sm:text-xs">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-4 gap-y-1">
           <span className="inline-flex items-center gap-1.5 text-[#E5B85B]">
             <ShieldCheck className="h-3.5 w-3.5" />
-            Aotearoa&apos;s Authenticated Vintage Vault
+            Aotearoa&apos;s Building Block Store
           </span>
           <span className="hidden text-[#5B5F6B] sm:inline">•</span>
-          <span>Free Overnight Insured NZ Courier Over NZ$500</span>
+          <span>Free NZ Shipping Over NZ$100</span>
           <span className="hidden text-[#5B5F6B] md:inline">•</span>
           <span className="hidden md:inline">All Prices in NZD Incl. 15% GST</span>
         </div>
@@ -73,7 +73,7 @@ export const Header: React.FC<HeaderProps> = ({
               </span>
             </div>
             <span className="hidden text-[10px] font-medium uppercase tracking-[0.16em] text-[#6B7280] sm:block">
-              Auckland Sealed Archive
+              Auckland Brick Studio
             </span>
           </div>
         </a>
@@ -88,34 +88,34 @@ export const Header: React.FC<HeaderProps> = ({
             }}
             className="transition-colors hover:text-[#111318]"
           >
-            Vault Catalog
+            Shop All
           </button>
           <button
             type="button"
             onClick={() => {
-              onSelectEra('WOTC 1999–2001');
+              onSelectEra('City & Vehicles');
               scrollToSection('vault-catalog');
             }}
             className="transition-colors hover:text-[#111318]"
           >
-            WOTC 1999–2001
+            City &amp; Vehicles
           </button>
           <button
             type="button"
             onClick={() => {
-              onSelectEra('XY Era 2014–2016');
+              onSelectEra('Architecture & Landmarks');
               scrollToSection('vault-catalog');
             }}
             className="transition-colors hover:text-[#111318]"
           >
-            XY &amp; Collector Boxes
+            Architecture
           </button>
           <button
             type="button"
             onClick={() => scrollToSection('authentication')}
             className="transition-colors hover:text-[#111318]"
           >
-            Authentication
+            Why KantoVault
           </button>
         </nav>
 

@@ -1,23 +1,24 @@
 export type Era =
-  | 'WOTC 1999–2001'
-  | 'EX & Classic 2003–2010'
-  | 'XY Era 2014–2016'
-  | 'Special & Sun & Moon';
+  | 'City & Vehicles'
+  | 'Architecture & Landmarks'
+  | 'Space & Science'
+  | 'Fantasy & Adventure';
 
 export type ProductCategory =
-  | 'Theme Deck Box'
-  | 'Elite Trainer Box'
-  | 'Collection Box'
-  | 'Collector Tin'
-  | 'Blister & Vintage Pack';
+  | 'Starter Set'
+  | 'Vehicle Set'
+  | 'Building Set'
+  | 'Collector Display Set'
+  | 'Bulk Brick Pack';
 
 export interface Product {
   id: string;
   sku: string;
-  tcgId: number;
+  code: number;
   name: string;
   setName: string;
-  year: number;
+  pieces: number;
+  age: string;
   era: Era;
   category: ProductCategory;
   priceNzd: number;

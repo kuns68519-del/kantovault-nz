@@ -88,11 +88,11 @@ export const ProductModal: React.FC<ProductModalProps> = ({
               />
             </div>
 
-            {/* UV-Seal Verified Ribbon */}
+            {/* Sealed Box Ribbon */}
             <div className="mt-3 flex items-center justify-between rounded-xl border border-[#E5DEC9] bg-[#F7F3E7] px-3.5 py-2.5 text-xs">
               <span className="inline-flex items-center gap-1.5 font-semibold text-[#7A5410]">
                 <ShieldCheck className="h-4 w-4 text-[#C9922B]" />
-                UV-Seal Verified Certificate
+                Brand New • Sealed Box
               </span>
               <span className="font-mono text-[11px] font-semibold text-[#4B5563]">
                 {product.sku}
@@ -110,7 +110,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
                 {product.badge}
               </span>
               <span className="rounded-full border border-[#DC2626]/25 bg-[#DC2626]/8 px-3 py-1 text-[11px] font-semibold text-[#B91C1C]">
-                Only {product.stock} left in Auckland Vault
+                Only {product.stock} left in stock
               </span>
             </div>
 
@@ -132,22 +132,22 @@ export const ProductModal: React.FC<ProductModalProps> = ({
             {/* Metadata Grid */}
             <div className="mt-5 grid grid-cols-2 gap-3 rounded-2xl border border-[#ECEAE4] bg-white p-4 text-xs sm:grid-cols-4">
               <div>
-                <div className="text-[#6B7280]">Expansion</div>
+                <div className="text-[#6B7280]">Series</div>
                 <div className="mt-0.5 font-semibold text-[#111318]">{product.setName}</div>
               </div>
               <div>
-                <div className="text-[#6B7280]">Release Year</div>
+                <div className="text-[#6B7280]">Pieces</div>
                 <div className="mt-0.5 font-mono font-semibold text-[#111318]">
-                  {product.year}
+                  {product.pieces.toLocaleString('en-NZ')}
                 </div>
               </div>
               <div>
-                <div className="text-[#6B7280]">Format</div>
-                <div className="mt-0.5 font-semibold text-[#111318]">{product.category}</div>
+                <div className="text-[#6B7280]">Ages</div>
+                <div className="mt-0.5 font-mono font-semibold text-[#111318]">{product.age}</div>
               </div>
               <div>
-                <div className="text-[#6B7280]">Condition</div>
-                <div className="mt-0.5 font-semibold text-[#15803D]">Factory Sealed</div>
+                <div className="text-[#6B7280]">Type</div>
+                <div className="mt-0.5 font-semibold text-[#111318]">{product.category}</div>
               </div>
             </div>
 
@@ -167,12 +167,12 @@ export const ProductModal: React.FC<ProductModalProps> = ({
               </ul>
             </div>
 
-            {/* NZ Overnight Dispatch Notice */}
+            {/* NZ Dispatch Notice */}
             <div className="mt-5 flex items-center gap-2.5 rounded-xl border border-[#E5E0D5] bg-white px-3.5 py-2.5 text-xs text-[#374151]">
               <Truck className="h-4 w-4 shrink-0 text-[#C9922B]" />
               <span>
-                Dispatches from our <strong>Auckland Vault</strong> via overnight signature-required
-                NZ Courier ({product.priceNzd >= 500 ? 'Free Insured Shipping' : 'NZ$18 Insured'}).
+                Ships from our <strong>Auckland studio</strong> via tracked NZ courier (Free over
+                NZ$100, otherwise NZ$10).
               </span>
             </div>
 

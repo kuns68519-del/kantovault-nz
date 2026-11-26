@@ -67,10 +67,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     el.style.setProperty('--ry', '0deg');
   };
 
-  const isGrail =
-    product.badge === 'Vault Grail' ||
-    product.badge === 'Most Demanded' ||
-    product.badge === '1st Edition';
+  const isFeaturedBadge =
+    product.badge === 'Best Seller' ||
+    product.badge === 'Limited Run' ||
+    product.badge === 'Staff Pick';
 
   return (
     <article
@@ -87,11 +87,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       <div className="flex items-center justify-between gap-2 px-4 pt-3.5">
         <div className="flex flex-wrap items-center gap-1.5">
           <span className="rounded-md bg-[#F4F2EC] px-2 py-0.5 font-mono text-[10px] font-semibold text-[#374151]">
-            {product.year}
+            {product.pieces.toLocaleString('en-NZ')} pcs
           </span>
           <span
             className={`rounded-md px-2 py-0.5 text-[10px] font-bold tracking-wide ${
-              isGrail
+              isFeaturedBadge
                 ? 'bg-[#DC2626]/10 text-[#B91C1C]'
                 : 'bg-[#C9922B]/14 text-[#8F6311]'
             }`}
@@ -113,7 +113,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </button>
       </div>
 
-      {/* Real Collector Photography Container */}
+      {/* Product Photography Container */}
       <div
         ref={imgWrapRef}
         className="relative mx-4 mt-2 flex aspect-square items-center justify-center overflow-hidden rounded-xl border border-[#F5F3EE] bg-[#F4F1EA]"
@@ -127,7 +127,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               referrerPolicy="no-referrer"
               onError={(e) => {
                 const img = e.currentTarget;
-                if (!usingFallback) {
+                if (!usingFallback && product.fallbackImageUrl !== product.imageUrl) {
                   setUsingFallback(true);
                   img.src = product.fallbackImageUrl;
                 } else {
@@ -177,7 +177,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           {product.name}
         </h3>
 
-        <p className="mt-1 line-clamp-1 text-xs text-[#6B7280]">{product.category}</p>
+        <p className="mt-1 line-clamp-1 text-xs text-[#6B7280]">
+          {product.category} • Ages {product.age}
+        </p>
 
         {/* Bottom Pricing + CTA Row */}
         <div className="mt-auto flex items-end justify-between gap-2 border-t border-[#F3F1EC] pt-3.5">

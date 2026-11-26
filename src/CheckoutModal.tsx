@@ -37,7 +37,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const [suburb, setSuburb] = useState('');
   const [postcode, setPostcode] = useState('');
   const [region, setRegion] = useState('Auckland');
-  const [courierMethod, setCourierMethod] = useState('Overnight Insured Signature Required');
+  const [courierMethod, setCourierMethod] = useState('Tracked NZ Courier (1–3 days)');
   const [paymentMethod, setPaymentMethod] = useState('Credit / Debit Card');
   const [confirmation, setConfirmation] = useState<OrderSummary | null>(null);
 
@@ -45,7 +45,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
   const subtotal = items.reduce((s, i) => s + i.product.priceNzd * i.quantity, 0);
   const shipping =
-    courierMethod === 'Auckland Vault Pickup' || subtotal >= 500 || subtotal === 0 ? 0 : 18;
+    courierMethod === 'Auckland Studio Pickup' || subtotal >= 100 || subtotal === 0 ? 0 : 10;
   const total = subtotal + shipping;
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -82,11 +82,11 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
       onClick={handleClose}
       role="dialog"
       aria-modal="true"
-      aria-label="New Zealand Collector Checkout"
+      aria-label="New Zealand Checkout"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="animate-fade-up relative max-h-[92vh] w-full max-w-3xl overflow-y-auto rounded-3xl border border-[#E5E0D5] bg-[#FAFAF8] p-5 shadow-2xl sm:p-8"
+        className="animate-modal-in relative max-h-[92vh] w-full max-w-3xl overflow-y-auto rounded-3xl border border-[#E5E0D5] bg-[#FAFAF8] p-5 shadow-2xl sm:p-8"
       >
         <button
           type="button"
@@ -103,15 +103,14 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
               <CheckCircle2 className="h-8 w-8" />
             </div>
             <p className="mt-4 font-mono text-xs font-bold uppercase tracking-widest text-[#9B6D16]">
-              Vault Reservation Confirmed
+              Order Confirmed
             </p>
             <h2 className="mt-1 font-serif text-3xl font-semibold text-[#111318]">
               Ngā mihi, {confirmation.customerName}
             </h2>
             <p className="mx-auto mt-2 max-w-md text-sm text-[#4B5563]">
-              Your sealed order <strong className="font-mono">{confirmation.orderNumber}</strong>{' '}
-              is queued at our Auckland Vault for UV-protection wrapping &amp; dispatch to{' '}
-              <strong>{confirmation.region}</strong>.
+              Your order <strong className="font-mono">{confirmation.orderNumber}</strong> is being
+              packed at our Auckland studio for dispatch to <strong>{confirmation.region}</strong>.
             </p>
 
             <div className="mx-auto mt-6 max-w-lg rounded-2xl border border-[#ECEAE4] bg-white p-5 text-left text-xs">
@@ -147,7 +146,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
           <form onSubmit={handleSubmit}>
             <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#9B6D16]">
               <Lock className="h-3.5 w-3.5" />
-              New Zealand Express Vault Checkout
+              New Zealand Express Checkout
             </div>
             <h2 className="mt-1 font-serif text-2xl font-semibold text-[#111318]">
               Complete Your Order
@@ -158,7 +157,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 {/* Buyer Details */}
                 <div className="rounded-2xl border border-[#ECEAE4] bg-white p-4">
                   <h3 className="text-xs font-bold uppercase tracking-wider text-[#111318]">
-                    1. Collector Details
+                    1. Customer Details
                   </h3>
                   <div className="mt-3 grid gap-3 sm:grid-cols-2">
                     <div className="sm:col-span-2">
@@ -183,7 +182,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                         required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="liam@collector.co.nz"
+                        placeholder="liam@builder.co.nz"
                         className="mt-1 w-full rounded-xl border border-[#E2DDD2] bg-[#FAFAF8] px-3 py-2 text-sm focus:border-[#C9922B] focus:outline-none"
                       />
                     </div>
@@ -277,10 +276,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                       Courier Option
                     </h3>
                     <div className="mt-2.5 space-y-2 text-xs">
-                      {[
-                        'Overnight Insured Signature Required',
-                        'Auckland Vault Pickup',
-                      ].map((opt) => (
+                      {['Tracked NZ Courier (1–3 days)', 'Auckland Studio Pickup'].map((opt) => (
                         <label
                           key={opt}
                           className="flex cursor-pointer items-start gap-2 rounded-xl border border-[#ECEAE4] p-2.5 hover:border-[#C9922B]"
@@ -330,7 +326,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
               <div className="lg:col-span-5">
                 <div className="rounded-2xl border border-[#ECEAE4] bg-white p-5">
                   <h3 className="text-xs font-bold uppercase tracking-wider text-[#111318]">
-                    Vault Order Summary
+                    Order Summary
                   </h3>
                   <ul className="mt-3 max-h-56 space-y-2.5 overflow-y-auto pr-1">
                     {items.map(({ product, quantity }) => (
@@ -351,7 +347,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                       <span className="font-mono font-semibold">{formatNzd(subtotal)}</span>
                     </div>
                     <div className="flex justify-between text-[#4B5563]">
-                      <span>Insured Courier</span>
+                      <span>Tracked NZ Courier</span>
                       <span className="font-mono font-semibold text-[#15803D]">
                         {shipping === 0 ? 'FREE' : formatNzd(shipping)}
                       </span>
@@ -371,7 +367,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
                   <p className="mt-3 flex items-center justify-center gap-1.5 text-[11px] text-[#6B7280]">
                     <ShieldCheck className="h-3.5 w-3.5 text-[#C9922B]" />
-                    Signature-required insured NZ delivery
+                    Tracked delivery across New Zealand
                   </p>
                 </div>
               </div>

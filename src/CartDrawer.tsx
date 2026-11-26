@@ -12,8 +12,8 @@ interface CartDrawerProps {
   onProceedToCheckout: () => void;
 }
 
-const FREE_SHIPPING_THRESHOLD = 500;
-const FLAT_COURIER_NZD = 18;
+const FREE_SHIPPING_THRESHOLD = 100;
+const FLAT_COURIER_NZD = 10;
 
 export const CartDrawer: React.FC<CartDrawerProps> = ({
   isOpen,
@@ -62,20 +62,20 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
           </button>
         </div>
 
-        {/* Free Insured NZ Courier Progress Bar */}
+        {/* Free Tracked NZ Shipping Progress Bar */}
         <div className="border-b border-[#ECEAE4] bg-[#F6F3EB] px-5 py-3">
           <div className="flex items-center gap-2 text-xs font-medium text-[#374151]">
             <Truck className="h-4 w-4 shrink-0 text-[#C9922B]" />
             {subtotal === 0 ? (
-              <span>Free overnight insured NZ courier on orders over NZ$500</span>
+              <span>Free tracked NZ shipping on orders over NZ$100</span>
             ) : remainingForFree === 0 ? (
               <span className="font-semibold text-[#15803D]">
-                Unlocked: Free Overnight Insured NZ Post Express Courier
+                Unlocked: Free Tracked NZ Courier
               </span>
             ) : (
               <span>
                 Add <strong className="font-mono">{formatNzd(remainingForFree)}</strong> more for
-                free insured NZ overnight courier
+                free tracked NZ shipping
               </span>
             )}
           </div>
@@ -98,15 +98,14 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                 Your Vault Bag is empty
               </h3>
               <p className="mt-1 max-w-xs text-xs text-[#6B7280]">
-                Explore our {PRODUCTS.length} authenticated WOTC, EX, XY, and Sun &amp; Moon sealed boxes capped at
-                NZ$1,600.
+                Explore our {PRODUCTS.length} building sets, from starter kits to collector displays.
               </p>
               <button
                 type="button"
                 onClick={onClose}
                 className="mt-5 rounded-full bg-[#111318] px-5 py-2.5 text-xs font-semibold text-white hover:bg-[#1F242D]"
               >
-                Browse Vault Catalog
+                Browse Brick Catalog
               </button>
             </div>
           ) : (
@@ -129,7 +128,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                     <div className="flex items-start justify-between gap-2">
                       <div>
                         <div className="text-[10px] font-bold uppercase tracking-wider text-[#9B6D16]">
-                          {product.setName} • {product.year}
+                          {product.setName} • {product.pieces.toLocaleString('en-NZ')} pcs
                         </div>
                         <h4 className="line-clamp-2 text-xs font-semibold text-[#111318]">
                           {product.name}
@@ -191,7 +190,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                 </span>
               </div>
               <div className="flex justify-between text-[#4B5563]">
-                <span>Overnight Insured NZ Courier</span>
+                <span>Tracked NZ Courier</span>
                 <span className="font-mono font-semibold text-[#15803D]">
                   {shipping === 0 ? 'FREE' : formatNzd(shipping)}
                 </span>
@@ -217,7 +216,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
             <div className="mt-3 flex items-center justify-center gap-1.5 text-[11px] text-[#6B7280]">
               <ShieldCheck className="h-3.5 w-3.5 text-[#C9922B]" />
-              <span>100% Factory-Seal Money-Back Guarantee</span>
+              <span>30-Day Easy Returns on Unopened Sets</span>
             </div>
           </div>
         )}

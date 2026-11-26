@@ -30,18 +30,20 @@ export const Footer: React.FC<FooterProps> = ({ onSelectEra }) => {
               <span className="font-serif text-lg font-semibold text-white">KantoVault NZ</span>
             </div>
             <p className="mt-3 max-w-sm text-xs leading-relaxed text-[#9CA3AF]">
-              Aotearoa&apos;s specialist storefront for factory-sealed vintage Pokémon TCG boxes,
-              theme decks, collector tins, and classic packs—strictly curated at NZ$1,600 or less.
+              Aotearoa&apos;s online store for building-block sets — starter kits, vehicles,
+              architecture and collector display models.
             </p>
             <div className="mt-4 inline-flex items-center gap-1.5 text-xs text-[#E5B85B]">
               <MapPin className="h-3.5 w-3.5" />
-              <span>Auckland Central Vault • Ships Nationwide Across NZ</span>
+              <span>Auckland Studio • Ships Nationwide Across NZ</span>
             </div>
           </div>
 
-          {/* Eras */}
+          {/* Collections */}
           <div className="md:col-span-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-white">Browse Eras</h4>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white">
+              Browse Collections
+            </h4>
             <ul className="mt-3 space-y-2 text-xs">
               {ERAS.map((era) => (
                 <li key={era}>
@@ -63,10 +65,10 @@ export const Footer: React.FC<FooterProps> = ({ onSelectEra }) => {
           {/* Payment & Assurance */}
           <div className="md:col-span-4">
             <h4 className="text-xs font-bold uppercase tracking-wider text-white">
-              NZ Collector Checkout
+              NZ Checkout
             </h4>
             <div className="mt-3 flex flex-wrap gap-2">
-              {['Visa / Mastercard', 'NZ Bank / POLi', 'Afterpay NZD', 'NZ Post Insured'].map(
+              {['Visa / Mastercard', 'NZ Bank / POLi', 'Afterpay NZD', 'Tracked NZ Courier'].map(
                 (pill) => (
                   <span
                     key={pill}
@@ -86,10 +88,7 @@ export const Footer: React.FC<FooterProps> = ({ onSelectEra }) => {
 
         <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-[#222630] pt-6 text-[11px] text-[#6B7280] sm:flex-row sm:items-center">
           <p>© {new Date().getFullYear()} KantoVault NZ. All rights reserved.</p>
-          <p>
-            Independent New Zealand collector vault. Pokémon &amp; Pokémon TCG are trademarks of
-            Nintendo / Creatures Inc. / GAME FREAK Inc.
-          </p>
+          <p>Independent New Zealand toy retailer.</p>
         </div>
       </div>
     </footer>

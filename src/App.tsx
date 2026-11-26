@@ -11,11 +11,11 @@ import { CheckoutModal } from './CheckoutModal';
 import { TrustSection } from './TrustSection';
 import { Footer } from './Footer';
 
-type SortOption = 'featured' | 'price-desc' | 'price-asc' | 'year-asc' | 'year-desc';
-type PriceTier = 'all' | 'under-700' | '700-1200' | '1200-1600';
+type SortOption = 'featured' | 'price-desc' | 'price-asc' | 'pieces-desc' | 'pieces-asc';
+type PriceTier = 'all' | 'under-60' | '60-150' | 'over-150';
 
-const CART_STORAGE_KEY = 'kantovault_nz_cart_v1';
-const WATCH_STORAGE_KEY = 'kantovault_nz_watch_v1';
+const CART_STORAGE_KEY = 'kantovault_nz_cart_v2';
+const WATCH_STORAGE_KEY = 'kantovault_nz_watch_v2';
 
 export function App() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -82,9 +82,9 @@ export function App() {
   }, [toastMessage]);
 
   const featuredProducts = useMemo(() => {
-    const spotlightIds = [123447, 692399, 277112];
-    return spotlightIds
-      .map((tcgId) => PRODUCTS.find((p) => p.tcgId === tcgId))
+    const spotlightCodes = [1028, 1019, 1004];
+    return spotlightCodes
+      .map((code) => PRODUCTS.find((p) => p.code === code))
       .filter((p): p is Product => Boolean(p));
   }, []);
 
@@ -103,12 +103,12 @@ export function App() {
       if (selectedCategory !== 'All' && p.category !== selectedCategory) return false;
       if (showWatchlistOnly && !watchlist.includes(p.id)) return false;
 
-      if (priceTier === 'under-700' && p.priceNzd >= 700) return false;
-      if (priceTier === '700-1200' && (p.priceNzd < 700 || p.priceNzd > 1200)) return false;
-      if (priceTier === '1200-1600' && (p.priceNzd <= 1200 || p.priceNzd > 1600)) return false;
+      if (priceTier === 'under-60' && p.priceNzd >= 60) return false;
+      if (priceTier === '60-150' && (p.priceNzd < 60 || p.priceNzd > 150)) return false;
+      if (priceTier === 'over-150' && p.priceNzd <= 150) return false;
 
       if (q) {
-        const hay = `${p.name} ${p.setName} ${p.era} ${p.category} ${p.year} ${p.sku} ${p.badge}`.toLowerCase();
+        const hay = `${p.name} ${p.setName} ${p.era} ${p.category} ${p.pieces} ${p.pieces} pcs ages ${p.age} ${p.sku} ${p.badge}`.toLowerCase();
         if (!hay.includes(q)) return false;
       }
       return true;
@@ -117,8 +117,8 @@ export function App() {
     return [...list].sort((a, b) => {
       if (sortBy === 'price-desc') return b.priceNzd - a.priceNzd;
       if (sortBy === 'price-asc') return a.priceNzd - b.priceNzd;
-      if (sortBy === 'year-asc') return a.year - b.year || b.priceNzd - a.priceNzd;
-      if (sortBy === 'year-desc') return b.year - a.year || b.priceNzd - a.priceNzd;
+      if (sortBy === 'pieces-desc') return b.pieces - a.pieces || b.priceNzd - a.priceNzd;
+      if (sortBy === 'pieces-asc') return a.pieces - b.pieces || a.priceNzd - b.priceNzd;
       return b.demandScore - a.demandScore || b.priceNzd - a.priceNzd;
     });
   }, [searchQuery, selectedEra, selectedCategory, priceTier, sortBy, showWatchlistOnly, watchlist]);
@@ -212,7 +212,7 @@ export function App() {
     setWatchlist((prev) => {
       const exists = prev.includes(productId);
       const next = exists ? prev.filter((id) => id !== productId) : [...prev, productId];
-      setToastMessage(exists ? 'Removed from Watchlist' : 'Saved to Collector Watchlist');
+      setToastMessage(exists ? 'Removed from Watchlist' : 'Saved to Watchlist');
       return next;
     });
   };
@@ -263,16 +263,16 @@ export function App() {
           }}
         />
 
-        {/* Vault Catalog Section */}
+        {/* Brick Catalog Section */}
         <section id="vault-catalog" className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
           {/* Catalog Heading & Search */}
           <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div>
               <span className="font-mono text-xs font-bold uppercase tracking-[0.16em] text-[#9B6D16]">
-                Authenticated Inventory • {PRODUCTS.length} Sealed Pieces
+                In Stock • {PRODUCTS.length} Building Sets
               </span>
               <h2 className="mt-1.5 font-serif text-3xl font-semibold tracking-tight text-[#111318] sm:text-4xl">
-                The New Zealand Sealed Vault
+                The KantoVault Brick Collection
               </h2>
             </div>
 
@@ -282,14 +282,14 @@ export function App() {
                 type="search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search set, Charizard, 1999, ETB..."
-                aria-label="Search vintage Pokémon products"
+                placeholder="Search castle, rocket, starter, 1000 pcs..."
+                aria-label="Search building block sets"
                 className="w-full rounded-full border border-[#DFDAD0] bg-white py-2.5 pl-10 pr-4 text-sm text-[#111318] placeholder-[#9CA3AF] shadow-2xs focus:border-[#C9922B] focus:outline-none"
               />
             </div>
           </div>
 
-          {/* Era Filter Tabs */}
+          {/* Collection Filter Tabs */}
           <div className="mt-7 flex flex-wrap gap-2">
             {(['All', ...ERAS] as const).map((era) => {
               const active = selectedEra === era;
@@ -304,7 +304,7 @@ export function App() {
                       : 'border-[#E5E0D5] bg-white text-[#4B5563] hover:border-[#C9922B]/70 hover:text-[#111318]'
                   }`}
                 >
-                  <span>{era === 'All' ? 'All Eras' : era}</span>
+                  <span>{era === 'All' ? 'All Collections' : era}</span>
                   <span
                     className={`rounded-full px-1.5 py-0.5 font-mono text-[10px] ${
                       active ? 'bg-[#C9922B] text-[#111318]' : 'bg-[#F3F1EC] text-[#6B7280]'
@@ -317,12 +317,12 @@ export function App() {
             })}
           </div>
 
-          {/* Secondary Filter Bar: Format, Price Tier, Watchlist, Sort */}
+          {/* Secondary Filter Bar: Type, Price Tier, Sort */}
           <div className="mt-4 flex flex-col gap-3 rounded-2xl border border-[#ECEAE4] bg-white p-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex flex-wrap items-center gap-2">
               <span className="mr-1 inline-flex items-center gap-1 text-xs font-semibold text-[#6B7280]">
                 <Filter className="h-3.5 w-3.5 text-[#C9922B]" />
-                Format:
+                Type:
               </span>
               {(['All', ...CATEGORIES] as const).map((cat) => (
                 <button
@@ -350,25 +350,25 @@ export function App() {
                   onChange={(e) => setPriceTier(e.target.value as PriceTier)}
                   className="rounded-full border border-[#E5E0D5] bg-[#FAFAF8] px-3 py-1.5 text-xs font-medium text-[#111318] focus:border-[#C9922B] focus:outline-none"
                 >
-                  <option value="all">All ≤ NZ$1,600</option>
-                  <option value="under-700">Under NZ$700</option>
-                  <option value="700-1200">NZ$700 – NZ$1,200</option>
-                  <option value="1200-1600">NZ$1,200 – NZ$1,600</option>
+                  <option value="all">All Prices</option>
+                  <option value="under-60">Under NZ$60</option>
+                  <option value="60-150">NZ$60 – NZ$150</option>
+                  <option value="over-150">Over NZ$150</option>
                 </select>
               </div>
 
               {/* Sort Select */}
               <select
-                aria-label="Sort vintage products"
+                aria-label="Sort building sets"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as SortOption)}
                 className="rounded-full border border-[#E5E0D5] bg-[#FAFAF8] px-3 py-1.5 text-xs font-medium text-[#111318] focus:border-[#C9922B] focus:outline-none"
               >
-                <option value="featured">Sort: Featured Grails</option>
+                <option value="featured">Sort: Featured</option>
                 <option value="price-desc">Price: High to Low</option>
                 <option value="price-asc">Price: Low to High</option>
-                <option value="year-asc">Oldest Era First</option>
-                <option value="year-desc">Newest First</option>
+                <option value="pieces-desc">Most Pieces</option>
+                <option value="pieces-asc">Fewest Pieces</option>
               </select>
             </div>
           </div>
@@ -377,8 +377,8 @@ export function App() {
           <div className="mt-5 flex flex-wrap items-center justify-between gap-2 text-xs text-[#6B7280]">
             <div>
               Showing <strong className="font-mono text-[#111318]">{filteredProducts.length}</strong>{' '}
-              of <strong className="font-mono text-[#111318]">{PRODUCTS.length}</strong> sealed
-              collector items
+              of <strong className="font-mono text-[#111318]">{PRODUCTS.length}</strong> building
+              sets
               {showWatchlistOnly && (
                 <span className="ml-2 inline-flex items-center gap-1 rounded-full bg-[#DC2626]/10 px-2 py-0.5 font-semibold text-[#B91C1C]">
                   <Heart className="h-3 w-3 fill-[#DC2626]" />
@@ -407,10 +407,10 @@ export function App() {
           {filteredProducts.length === 0 ? (
             <div className="mt-8 rounded-3xl border border-dashed border-[#DAD4C8] bg-white px-6 py-16 text-center">
               <p className="font-serif text-xl font-semibold text-[#111318]">
-                No vintage sealed items match those filters.
+                No sets match those filters.
               </p>
               <p className="mt-1.5 text-xs text-[#6B7280]">
-                Try broadening your era, price range, or search keyword.
+                Try broadening your collection, price range, or search keyword.
               </p>
               <button
                 type="button"

@@ -42,18 +42,17 @@ export const Hero: React.FC<HeroProps> = ({
         <div className="lg:col-span-7">
           <div className="inline-flex items-center gap-2 rounded-full border border-[#E5E0D5] bg-white px-3.5 py-1.5 text-xs font-medium text-[#4B5563] shadow-2xs">
             <MapPin className="h-3.5 w-3.5 text-[#C9922B]" />
-            <span>Auckland Vault • Direct NZ Dispatch • No Import Duties</span>
+            <span>Auckland Studio • Fast NZ Dispatch • No Import Duties</span>
           </div>
 
           <h1 className="mt-5 font-serif text-4xl font-semibold leading-[1.08] tracking-tight text-[#111318] sm:text-5xl lg:text-[54px]">
-            Factory-Sealed Vintage Pokémon Boxes.{' '}
-            <span className="italic text-[#9B6D16]">Curated for NZ Collectors.</span>
+            Build Something Remarkable.{' '}
+            <span className="italic text-[#9B6D16]">Brick Sets for Every Age.</span>
           </h1>
 
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#4B5563] sm:text-lg">
-            {PRODUCTS.length} hand-authenticated Wizards of the Coast, EX-era, XY, and Special Edition sealed
-            boxes &amp; collector grails—every single piece verified in New Zealand and capped at{' '}
-            <span className="font-mono font-semibold text-[#111318]">NZ$1,600</span> or less.
+            {PRODUCTS.length} building-block sets, from 5+ starter kits to 2,000+ piece display
+            models, shipped from Auckland.
           </p>
 
           {/* Dual CTAs */}
@@ -63,38 +62,38 @@ export const Hero: React.FC<HeroProps> = ({
               onClick={onExploreAll}
               className="inline-flex items-center gap-2 rounded-full bg-[#111318] px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#1F242D] active:scale-[0.99]"
             >
-              <span>Explore {PRODUCTS.length}-Item Vault</span>
+              <span>Explore {PRODUCTS.length} Sets</span>
               <ArrowRight className="h-4 w-4 text-[#E5B85B]" />
             </button>
 
             <button
               type="button"
-              onClick={() => onFilterEra('WOTC 1999–2001')}
+              onClick={() => onFilterEra('Fantasy & Adventure')}
               className="inline-flex items-center gap-2 rounded-full border border-[#D8D3C8] bg-white px-6 py-3.5 text-sm font-semibold text-[#111318] transition-all hover:border-[#C9922B] hover:bg-[#FCFBF8]"
             >
               <Sparkles className="h-4 w-4 text-[#C9922B]" />
-              <span>Shop WOTC 1999–2001</span>
+              <span>Shop Fantasy &amp; Adventure</span>
             </button>
           </div>
 
-          {/* 3 Concise Vault Metrics */}
+          {/* 3 Concise Studio Metrics */}
           <div className="mt-10 grid max-w-xl grid-cols-3 gap-4 border-t border-[#E9E5DC] pt-6">
             <div>
               <div className="font-mono text-2xl font-bold text-[#111318]">{PRODUCTS.length}</div>
-              <div className="mt-0.5 text-xs font-medium text-[#6B7280]">Real Sealed Items</div>
+              <div className="mt-0.5 text-xs font-medium text-[#6B7280]">Sets In Stock</div>
             </div>
             <div>
-              <div className="font-mono text-2xl font-bold text-[#9B6D16]">≤ NZ$1,600</div>
-              <div className="mt-0.5 text-xs font-medium text-[#6B7280]">Collector Price Cap</div>
+              <div className="font-mono text-2xl font-bold text-[#9B6D16]">NZ$29+</div>
+              <div className="mt-0.5 text-xs font-medium text-[#6B7280]">Starter Sets From</div>
             </div>
             <div>
-              <div className="font-mono text-2xl font-bold text-[#111318]">1–2 Day</div>
-              <div className="mt-0.5 text-xs font-medium text-[#6B7280]">Insured NZ Courier</div>
+              <div className="font-mono text-2xl font-bold text-[#111318]">1–3 Day</div>
+              <div className="mt-0.5 text-xs font-medium text-[#6B7280]">NZ Delivery</div>
             </div>
           </div>
         </div>
 
-        {/* Right Interactive Featured Vault Showcase */}
+        {/* Right Interactive Featured Spotlight */}
         <div className="lg:col-span-5">
           {activeProduct && (
             <div
@@ -106,10 +105,10 @@ export const Hero: React.FC<HeroProps> = ({
               <div className="flex items-center justify-between gap-2">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-[#111318] px-3 py-1 text-[11px] font-semibold tracking-wide text-[#E5B85B]">
                   <ShieldCheck className="h-3.5 w-3.5" />
-                  VAULT SPOTLIGHT
+                  FEATURED BUILD
                 </span>
                 <span className="font-mono text-xs font-medium text-[#6B7280]">
-                  {activeProduct.sku} • {activeProduct.year}
+                  {activeProduct.pieces.toLocaleString('en-NZ')} pcs • Ages {activeProduct.age}
                 </span>
               </div>
 
@@ -136,7 +135,7 @@ export const Hero: React.FC<HeroProps> = ({
                 </div>
                 <span className="absolute bottom-3 right-3 inline-flex items-center gap-1 rounded-full border border-[#E5E0D5] bg-white/95 px-2.5 py-1 text-[11px] font-semibold text-[#111318] shadow-xs backdrop-blur-xs">
                   <CheckCircle2 className="h-3 w-3 text-[#16A34A]" />
-                  Factory Seal Verified
+                  In Stock in NZ
                 </span>
               </button>
 
@@ -183,7 +182,9 @@ export const Hero: React.FC<HeroProps> = ({
                         : 'border-[#ECEAE4] bg-[#FAFAF8] text-[#4B5563] hover:border-[#C9922B]/60'
                     }`}
                   >
-                    <div className="truncate font-mono text-[10px] opacity-75">{item.year}</div>
+                    <div className="truncate font-mono text-[10px] opacity-75">
+                      {item.pieces.toLocaleString('en-NZ')} pcs
+                    </div>
                     <div className="truncate text-[11px] font-semibold">{item.setName}</div>
                   </button>
                 ))}

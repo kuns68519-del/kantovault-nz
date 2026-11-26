@@ -1,45 +1,45 @@
 import React, { useState } from 'react';
-import { Award, ChevronDown, Lock, Mail, RefreshCw, ShieldCheck, Truck } from 'lucide-react';
+import { Award, ChevronDown, Lock, Mail, PackageCheck, RefreshCw, Truck } from 'lucide-react';
 
 const PILLARS = [
   {
-    icon: ShieldCheck,
-    title: 'Multi-Point Factory Seal Inspection',
-    body: 'Every WOTC cellophane tear-strip, foil crimp, and shrink-wrap seam is inspected under stereo magnification in Auckland before listing.',
-  },
-  {
-    icon: Lock,
-    title: 'Climate-Controlled Auckland Vault',
-    body: 'Stored at stable 45% humidity away from UV light, with rigid acrylic box/pack protectors included on high-tier grails.',
-  },
-  {
     icon: Truck,
-    title: 'Insured Overnight NZ Courier',
-    body: 'Double-boxed, bubble-cradled dispatch via NZ Post Express & PBT Signature Courier across North & South Islands—no customs delays.',
+    title: 'Fast Auckland Dispatch',
+    body: 'Orders placed before 2:00 PM NZT ship same day from our Auckland studio via tracked NZ courier—free on orders over NZ$100.',
   },
   {
     icon: RefreshCw,
-    title: 'Local NZ Collector Buyback',
-    body: 'Looking to trade or upgrade your sealed collection? We offer transparent NZD buyback quotes for authenticated vintage sealed boxes.',
+    title: '30-Day Easy Returns',
+    body: 'Changed your mind on a gift or project? Return any unopened set within 30 days for a straightforward refund or swap.',
+  },
+  {
+    icon: Lock,
+    title: 'Secure NZ Checkout',
+    body: 'Pay smoothly in New Zealand Dollars using Visa, Mastercard, NZ Bank Transfer / POLi, or Afterpay with 15% GST included.',
+  },
+  {
+    icon: PackageCheck,
+    title: 'Gift-Ready Packing',
+    body: 'Every retail box is cushioned inside sturdy double-walled outer cartons so corners stay crisp from Auckland to your doorstep.',
   },
 ];
 
 const FAQS = [
   {
-    q: 'Are all vintage packs and boxes guaranteed unweighed and factory sealed?',
-    a: 'Yes. Loose vintage packs come from verified box-breaks or tamper-evident retail blisters, and every boxed product is inspected for intact factory cellophane, seams, and zero reseal glue residue.',
+    q: 'Do your bricks work with other brick brands?',
+    a: 'Yes. Our sets use the standard stud size common across the hobby, so they combine smoothly with most bricks you already own.',
   },
   {
-    q: 'Why is the vault capped at NZ$1,600 per item?',
-    a: 'We specialize in high-demand investment-grade vintage sealed pieces that Kiwi collectors can realistically acquire without five-figure auction premiums—every single item sits at or below NZ$1,600.',
+    q: 'What age are the sets for?',
+    a: 'Every set lists an age guide on its product card—ranging from 4+ bulk brick tubs and 5+ starter kits up to 16+ and 18+ collector display models.',
   },
   {
-    q: 'Are GST and import duties already included?',
-    a: 'Yes! Every item is already housed inside New Zealand. Prices are listed in NZD inclusive of 15% GST, with zero surprise overseas customs fees.',
+    q: 'How fast is delivery?',
+    a: 'Tracked courier delivery takes 1–3 business days nationwide across North and South Islands, and shipping is free on all orders over NZ$100.',
   },
   {
-    q: 'How fast is shipping to Wellington, Christchurch, or regional NZ?',
-    a: 'Orders placed before 2:00 PM NZT ship same-day from Auckland on overnight signature-required courier (1–2 business days nationwide; free over NZ$500).',
+    q: 'Are GST and duties included?',
+    a: 'Yes. All stock is held in Auckland, NZD prices include 15% GST, and there are zero overseas import fees or customs delays.',
   },
 ];
 
@@ -62,14 +62,14 @@ export const TrustSection: React.FC = () => {
         <div className="max-w-2xl">
           <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.16em] text-[#9B6D16]">
             <Award className="h-4 w-4" />
-            The KantoVault Standard
+            The KantoVault Promise
           </div>
           <h2 className="mt-2 font-serif text-3xl font-semibold tracking-tight text-[#111318] sm:text-4xl">
-            Built on collector trust across Aotearoa.
+            Built for Kiwi builders.
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-[#4B5563] sm:text-base">
-            Buying 1999–2021 sealed Pokémon product requires certainty. Every piece in our catalog
-            is stocked locally in Auckland and backed by our 100% authenticity guarantee.
+            Whether you&apos;re picking up a weekend starter kit or a 2,600-piece centerpiece, every
+            box ships locally from Auckland with clear pricing and zero guesswork.
           </p>
         </div>
 
@@ -89,12 +89,12 @@ export const TrustSection: React.FC = () => {
           ))}
         </div>
 
-        {/* FAQ + Collector Drop Alert */}
+        {/* FAQ + New Set Drops Alert */}
         <div className="mt-14 grid gap-8 lg:grid-cols-12">
           {/* FAQ Accordion */}
           <div className="lg:col-span-7">
             <h3 className="font-serif text-2xl font-semibold text-[#111318]">
-              Collector Questions
+              Builder Questions
             </h3>
             <div className="mt-4 divide-y divide-[#ECEAE4] rounded-2xl border border-[#ECEAE4] bg-[#FAFAF8]">
               {FAQS.map((item, idx) => {
@@ -128,22 +128,22 @@ export const TrustSection: React.FC = () => {
               <div>
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-[#C9922B]/20 px-3 py-1 font-mono text-[11px] font-semibold text-[#E5B85B]">
                   <Mail className="h-3.5 w-3.5" />
-                  NZ VAULT DROPS
+                  NEW SET DROPS
                 </span>
                 <h3 className="mt-4 font-serif text-2xl font-semibold">
-                  Get early access to new vintage arrivals.
+                  Be first to hear about new sets and restocks.
                 </h3>
                 <p className="mt-2 text-xs leading-relaxed text-[#B9BEC9]">
-                  Receive weekly Auckland Vault restock alerts when 1st Edition WOTC decks, EX tins,
-                  and XY Evolutions boxes under NZ$1,600 clear authentication.
+                  Get Auckland restock updates when popular modular buildings, space models, and bulk
+                  brick tubs arrive in stock.
                 </p>
               </div>
 
               <form onSubmit={handleSubscribe} className="mt-6">
                 {subscribed ? (
                   <div className="rounded-2xl border border-[#16A34A]/40 bg-[#16A34A]/15 px-4 py-3 text-xs font-medium text-[#86EFAC]">
-                    You&apos;re on the KantoVault NZ early-access list. Watch your inbox every
-                    Thursday at 7:00 PM NZT.
+                    You&apos;re on the KantoVault NZ update list. We&apos;ll email you when new sets
+                    land in Auckland.
                   </div>
                 ) : (
                   <div className="flex flex-col gap-2.5 sm:flex-row">
@@ -152,7 +152,7 @@ export const TrustSection: React.FC = () => {
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="collector@email.co.nz"
+                      placeholder="builder@email.co.nz"
                       className="flex-1 rounded-full border border-[#2D323E] bg-[#1A1E27] px-4 py-3 text-xs text-white placeholder-[#7C8290] focus:border-[#C9922B] focus:outline-none"
                     />
                     <button
