@@ -6,7 +6,6 @@ import {
   FileText,
   Mail,
   MapPin,
-  Phone,
   RefreshCw,
   ShieldCheck,
   Truck,
@@ -380,16 +379,6 @@ export const PolicyPages: React.FC<PolicyPagesProps> = ({ path, onNavigate }) =>
                       {STORE_CONFIG.address.country}
                     </div>
                   </div>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <Phone className="h-4 w-4 shrink-0 text-[#C9922B]" />
-                  <a
-                    href={`tel:${STORE_CONFIG.supportPhone.replace(/\s+/g, '')}`}
-                    className="font-mono font-semibold text-[#111318] hover:text-[#9B6D16]"
-                  >
-                    {STORE_CONFIG.supportPhone}
-                  </a>
                 </div>
 
                 <div className="flex items-center gap-3">

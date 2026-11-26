@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mail, MapPin, Phone, ShieldCheck } from 'lucide-react';
+import { Mail, MapPin, ShieldCheck } from 'lucide-react';
 import { Era } from './types';
 import { ERAS } from './products';
 import { STORE_CONFIG } from './storeConfig';
@@ -51,15 +51,6 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onSelectEra }) => {
                   {STORE_CONFIG.address.street}, {STORE_CONFIG.address.city}{' '}
                   {STORE_CONFIG.address.postcode}, {STORE_CONFIG.address.country}
                 </span>
-              </div>
-              <div className="flex items-center gap-2 text-[#9CA3AF]">
-                <Phone className="h-3.5 w-3.5 shrink-0 text-[#C9922B]" />
-                <a
-                  href={`tel:${STORE_CONFIG.supportPhone.replace(/\s+/g, '')}`}
-                  className="font-mono hover:text-white"
-                >
-                  {STORE_CONFIG.supportPhone}
-                </a>
               </div>
               <div className="flex items-center gap-2 text-[#9CA3AF]">
                 <Mail className="h-3.5 w-3.5 shrink-0 text-[#C9922B]" />

@@ -2,8 +2,7 @@ export const STORE_CONFIG = {
   storeName: 'KantoVault NZ',
   legalName: 'KantoVault NZ Studio',
   domain: 'https://www.kantovault.store',
-  supportEmail: 'support@kantovault.store',
-  supportPhone: '+64 9 889 4210',
+  supportEmail: 'supportagent@kantovault.store',
   address: {
     street: '42 Ponsonby Road, Grey Lynn',
     city: 'Auckland',
