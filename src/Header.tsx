@@ -6,6 +6,7 @@ import { formatNzd } from './products';
 interface HeaderProps {
   cartCount: number;
   cartTotal: number;
+  cartPulse: number;
   watchlistCount: number;
   showWatchlistOnly: boolean;
   onToggleWatchlistFilter: () => void;
@@ -16,6 +17,7 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({
   cartCount,
   cartTotal,
+  cartPulse,
   watchlistCount,
   showWatchlistOnly,
   onToggleWatchlistFilter,
@@ -138,13 +140,24 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
 
           <button
+            id="vault-bag-button"
             type="button"
             onClick={onOpenCart}
             className="inline-flex items-center gap-2.5 rounded-full bg-[#111318] px-4 py-2 text-xs font-semibold text-white shadow-sm transition-all hover:bg-[#1F232C] active:scale-[0.98]"
           >
-            <ShoppingBag className="h-3.5 w-3.5 text-[#E5B85B]" />
+            <span
+              key={`w-${cartPulse}`}
+              className={cartPulse > 0 ? 'inline-flex animate-cart-wiggle' : 'inline-flex'}
+            >
+              <ShoppingBag className="h-3.5 w-3.5 text-[#E5B85B]" />
+            </span>
             <span>Vault Bag</span>
-            <span className="rounded-full bg-[#C9922B] px-1.5 py-0.5 font-mono text-[11px] font-bold text-[#111318]">
+            <span
+              key={cartPulse}
+              className={`rounded-full bg-[#C9922B] px-1.5 py-0.5 font-mono text-[11px] font-bold text-[#111318] ${
+                cartPulse > 0 ? 'animate-badge-pop' : ''
+              }`}
+            >
               {cartCount}
             </span>
             {cartTotal > 0 && (

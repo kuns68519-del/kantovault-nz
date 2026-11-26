@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   CheckCircle2,
   Heart,
@@ -17,7 +17,7 @@ interface ProductModalProps {
   isWatched: boolean;
   onClose: () => void;
   onToggleWatchlist: (id: string) => void;
-  onAddToCart: (product: Product, quantity: number) => void;
+  onAddToCart: (product: Product, quantity: number, sourceEl: HTMLElement | null) => void;
 }
 
 export const ProductModal: React.FC<ProductModalProps> = ({
@@ -27,6 +27,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
   onToggleWatchlist,
   onAddToCart,
 }) => {
+  const imgWrapRef = useRef<HTMLDivElement>(null);
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
@@ -46,7 +47,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[#111318]/65 p-4 backdrop-blur-xs"
+      className="animate-backdrop-in fixed inset-0 z-50 flex items-center justify-center bg-[#111318]/65 p-4 backdrop-blur-xs"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -54,7 +55,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="animate-fade-up relative max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-3xl border border-[#E5E0D5] bg-[#FAFAF8] shadow-2xl"
+        className="animate-modal-in relative max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-3xl border border-[#E5E0D5] bg-[#FAFAF8] shadow-2xl"
       >
         <button
           type="button"
@@ -68,7 +69,11 @@ export const ProductModal: React.FC<ProductModalProps> = ({
         <div className="grid gap-6 p-5 sm:p-8 lg:grid-cols-12 lg:gap-8">
           {/* Left Studio Gallery */}
           <div className="lg:col-span-5">
-            <div className="flex aspect-square items-center justify-center overflow-hidden rounded-2xl border border-[#ECEAE4] bg-[#F4F1EA]">
+            <div
+              key={product.id}
+              ref={imgWrapRef}
+              className="shine-once flex aspect-square items-center justify-center overflow-hidden rounded-2xl border border-[#ECEAE4] bg-[#F4F1EA]"
+            >
               <img
                 src={product.imageUrl}
                 alt={product.name}
@@ -79,7 +84,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
                     img.src = product.fallbackImageUrl;
                   }
                 }}
-                className="h-full w-full object-cover"
+                className="animate-float h-full w-full object-cover"
               />
             </div>
 
@@ -198,7 +203,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
               <button
                 type="button"
                 onClick={() => {
-                  onAddToCart(product, quantity);
+                  onAddToCart(product, quantity, imgWrapRef.current);
                   onClose();
                 }}
                 className="flex-1 rounded-full bg-[#111318] px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-[#C9922B] hover:text-[#111318]"

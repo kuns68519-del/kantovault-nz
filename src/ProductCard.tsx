@@ -1,25 +1,71 @@
-import React, { useState } from 'react';
-import { Eye, Heart, Plus, ShieldCheck } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Check, Eye, Heart, Plus, ShieldCheck } from 'lucide-react';
 import { Product } from './types';
 import { formatNzd } from './products';
 
 interface ProductCardProps {
   product: Product;
+  index: number;
   isWatched: boolean;
   onToggleWatchlist: (id: string) => void;
   onInspect: (product: Product) => void;
-  onAddToCart: (product: Product) => void;
+  onAddToCart: (product: Product, sourceEl: HTMLElement | null) => void;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
   product,
+  index,
   isWatched,
   onToggleWatchlist,
   onInspect,
   onAddToCart,
 }) => {
+  const cardRef = useRef<HTMLElement>(null);
+  const imgWrapRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  const [justAdded, setJustAdded] = useState(false);
   const [imgFailed, setImgFailed] = useState(false);
   const [usingFallback, setUsingFallback] = useState(false);
+
+  useEffect(() => {
+    const el = cardRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') {
+      setVisible(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.12 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const el = cardRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const px = Math.min(1, Math.max(0, (e.clientX - rect.left) / rect.width));
+    const py = Math.min(1, Math.max(0, (e.clientY - rect.top) / rect.height));
+    el.style.setProperty('--ry', `${((px - 0.5) * 14).toFixed(2)}deg`);
+    el.style.setProperty('--rx', `${((0.5 - py) * 10).toFixed(2)}deg`);
+    el.style.setProperty('--mx', `${(px * 100).toFixed(1)}%`);
+    el.style.setProperty('--my', `${(py * 100).toFixed(1)}%`);
+  };
+
+  const handleMouseLeave = () => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const el = cardRef.current;
+    if (!el) return;
+    el.style.setProperty('--rx', '0deg');
+    el.style.setProperty('--ry', '0deg');
+  };
 
   const isGrail =
     product.badge === 'Vault Grail' ||
@@ -28,8 +74,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
   return (
     <article
+      ref={cardRef}
       onClick={() => onInspect(product)}
-      className="group relative flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-[#ECEAE4] bg-white transition-all duration-200 hover:-translate-y-0.5 hover:border-[#C9922B]/55 hover:shadow-[0_14px_34px_-18px_rgba(17,19,24,0.22)]"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ animationDelay: `${(index % 4) * 80}ms` }}
+      className={`tilt-card group relative flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-[#ECEAE4] bg-white hover:-translate-y-0.5 hover:border-[#C9922B]/55 hover:shadow-[0_24px_50px_-20px_rgba(201,146,43,0.45)] ${
+        visible ? 'animate-card-in' : 'opacity-0'
+      }`}
     >
       {/* Top Badges Row */}
       <div className="flex items-center justify-between gap-2 px-4 pt-3.5">
@@ -62,28 +114,37 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       </div>
 
       {/* Real Collector Photography Container */}
-      <div className="relative mx-4 mt-2 flex aspect-square items-center justify-center overflow-hidden rounded-xl border border-[#F5F3EE] bg-[#F4F1EA]">
+      <div
+        ref={imgWrapRef}
+        className="relative mx-4 mt-2 flex aspect-square items-center justify-center overflow-hidden rounded-xl border border-[#F5F3EE] bg-[#F4F1EA]"
+      >
         {!imgFailed ? (
-          <img
-            src={product.imageUrl}
-            alt={product.name}
-            loading="lazy"
-            referrerPolicy="no-referrer"
-            onError={(e) => {
-              const img = e.currentTarget;
-              if (!usingFallback) {
-                setUsingFallback(true);
-                img.src = product.fallbackImageUrl;
-              } else {
-                setImgFailed(true);
+          <>
+            <img
+              src={product.imageUrl}
+              alt={product.name}
+              loading="lazy"
+              referrerPolicy="no-referrer"
+              onError={(e) => {
+                const img = e.currentTarget;
+                if (!usingFallback) {
+                  setUsingFallback(true);
+                  img.src = product.fallbackImageUrl;
+                } else {
+                  setImgFailed(true);
+                }
+              }}
+              className={
+                usingFallback
+                  ? 'h-full w-full bg-white object-contain p-5 transition-transform duration-700 group-hover:scale-110'
+                  : 'h-full w-full object-cover transition-transform duration-700 group-hover:scale-110'
               }
-            }}
-            className={
-              usingFallback
-                ? 'h-full w-full bg-white object-contain p-5 transition-transform duration-500 group-hover:scale-105'
-                : 'h-full w-full object-cover transition-transform duration-500 group-hover:scale-105'
-            }
-          />
+            />
+            <span
+              aria-hidden="true"
+              className="holo-sheen pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+            />
+          </>
         ) : (
           <div className="flex flex-col items-center justify-center text-center text-[#9B6D16]">
             <ShieldCheck className="h-10 w-10 opacity-70" />
@@ -102,7 +163,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       <div className="flex flex-1 flex-col px-4 pb-4 pt-3.5">
         <div className="flex items-center justify-between gap-2 text-[10px] font-bold uppercase tracking-[0.12em] text-[#9B6D16]">
           <span className="truncate">{product.setName}</span>
-          <span className="shrink-0 text-[#6B7280]">{product.stock} left</span>
+          {product.stock === 1 ? (
+            <span className="inline-flex shrink-0 items-center gap-1 text-[#B91C1C]">
+              <span className="animate-pulse-dot h-1.5 w-1.5 rounded-full bg-[#DC2626]" />
+              Last one
+            </span>
+          ) : (
+            <span className="shrink-0 text-[#6B7280]">{product.stock} left</span>
+          )}
         </div>
 
         <h3 className="mt-1 line-clamp-2 min-h-[2.6rem] text-sm font-semibold leading-snug text-[#111318] transition-colors group-hover:text-[#8F6311]">
@@ -121,15 +189,31 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </div>
 
           <button
+            key={justAdded ? 'added' : 'add'}
             type="button"
             onClick={(e) => {
               e.stopPropagation();
-              onAddToCart(product);
+              onAddToCart(product, imgWrapRef.current);
+              setJustAdded(true);
+              window.setTimeout(() => setJustAdded(false), 1400);
             }}
-            className="inline-flex items-center gap-1 rounded-full bg-[#111318] px-3.5 py-2 text-xs font-semibold text-white transition-all hover:bg-[#C9922B] hover:text-[#111318] active:scale-95"
+            className={`inline-flex items-center gap-1 rounded-full px-3.5 py-2 text-xs font-semibold transition-all active:scale-95 ${
+              justAdded
+                ? 'animate-added-pop bg-[#C9922B] text-[#111318]'
+                : 'bg-[#111318] text-white hover:bg-[#C9922B] hover:text-[#111318]'
+            }`}
           >
-            <Plus className="h-3.5 w-3.5" />
-            <span>Add</span>
+            {justAdded ? (
+              <>
+                <Check className="h-3.5 w-3.5" />
+                <span>Added</span>
+              </>
+            ) : (
+              <>
+                <Plus className="h-3.5 w-3.5" />
+                <span>Add</span>
+              </>
+            )}
           </button>
         </div>
       </div>

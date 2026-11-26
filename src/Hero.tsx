@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ArrowRight, CheckCircle2, MapPin, ShieldCheck, Sparkles } from 'lucide-react';
 import { Era, Product } from './types';
 import { PRODUCTS, formatNzd } from './products';
@@ -17,6 +17,16 @@ export const Hero: React.FC<HeroProps> = ({
   onFilterEra,
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (paused || featuredProducts.length <= 1) return;
+    const timer = window.setInterval(() => {
+      setActiveIndex((i) => (i + 1) % featuredProducts.length);
+    }, 5000);
+    return () => window.clearInterval(timer);
+  }, [paused, featuredProducts.length]);
+
   const activeProduct = featuredProducts[activeIndex] ?? featuredProducts[0];
 
   return (
@@ -87,7 +97,11 @@ export const Hero: React.FC<HeroProps> = ({
         {/* Right Interactive Featured Vault Showcase */}
         <div className="lg:col-span-5">
           {activeProduct && (
-            <div className="relative rounded-3xl border border-[#E6E2D8] bg-white p-5 shadow-[0_20px_50px_-24px_rgba(17,19,24,0.16)] sm:p-6">
+            <div
+              onMouseEnter={() => setPaused(true)}
+              onMouseLeave={() => setPaused(false)}
+              className="relative rounded-3xl border border-[#E6E2D8] bg-white p-5 shadow-[0_20px_50px_-24px_rgba(17,19,24,0.16)] sm:p-6"
+            >
               {/* Top Header */}
               <div className="flex items-center justify-between gap-2">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-[#111318] px-3 py-1 text-[11px] font-semibold tracking-wide text-[#E5B85B]">
@@ -103,20 +117,23 @@ export const Hero: React.FC<HeroProps> = ({
               <button
                 type="button"
                 onClick={() => onInspectProduct(activeProduct)}
-                className="group relative mt-4 flex aspect-square w-full items-center justify-center overflow-hidden rounded-2xl border border-[#F0EDE6] bg-[#F4F1EA]"
+                className="shine-loop group relative mt-4 flex aspect-square w-full items-center justify-center overflow-hidden rounded-2xl border border-[#F0EDE6] bg-[#F4F1EA]"
               >
-                <img
-                  src={activeProduct.imageUrl}
-                  alt={activeProduct.name}
-                  referrerPolicy="no-referrer"
-                  onError={(e) => {
-                    const img = e.currentTarget;
-                    if (img.src !== activeProduct.fallbackImageUrl) {
-                      img.src = activeProduct.fallbackImageUrl;
-                    }
-                  }}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
+                <div className="animate-float h-full w-full">
+                  <img
+                    key={activeProduct.id}
+                    src={activeProduct.imageUrl}
+                    alt={activeProduct.name}
+                    referrerPolicy="no-referrer"
+                    onError={(e) => {
+                      const img = e.currentTarget;
+                      if (img.src !== activeProduct.fallbackImageUrl) {
+                        img.src = activeProduct.fallbackImageUrl;
+                      }
+                    }}
+                    className="animate-fade-up h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
                 <span className="absolute bottom-3 right-3 inline-flex items-center gap-1 rounded-full border border-[#E5E0D5] bg-white/95 px-2.5 py-1 text-[11px] font-semibold text-[#111318] shadow-xs backdrop-blur-xs">
                   <CheckCircle2 className="h-3 w-3 text-[#16A34A]" />
                   Factory Seal Verified
@@ -124,7 +141,7 @@ export const Hero: React.FC<HeroProps> = ({
               </button>
 
               {/* Product Details */}
-              <div className="mt-4">
+              <div key={activeProduct.id} className="animate-fade-up mt-4">
                 <div className="flex items-center justify-between text-[11px] font-semibold uppercase tracking-wider text-[#9B6D16]">
                   <span>{activeProduct.setName}</span>
                   <span>{activeProduct.category}</span>

@@ -29,6 +29,7 @@ export function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [cartPulse, setCartPulse] = useState(0);
 
   const [cart, setCart] = useState<CartItem[]>(() => {
     try {
@@ -125,7 +126,60 @@ export function App() {
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const cartTotal = cart.reduce((sum, item) => sum + item.product.priceNzd * item.quantity, 0);
 
-  const handleAddToCart = (product: Product, qty = 1) => {
+  const flyToCart = (imgSrc: string, sourceEl?: HTMLElement | null) => {
+    if (!sourceEl || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setCartPulse((p) => p + 1);
+      return;
+    }
+    const target = document.getElementById('vault-bag-button');
+    if (!target) {
+      setCartPulse((p) => p + 1);
+      return;
+    }
+
+    const srcRect = sourceEl.getBoundingClientRect();
+    const dstRect = target.getBoundingClientRect();
+
+    const ghost = document.createElement('img');
+    ghost.src = imgSrc;
+    ghost.alt = '';
+    ghost.style.position = 'fixed';
+    ghost.style.left = `${srcRect.left}px`;
+    ghost.style.top = `${srcRect.top}px`;
+    ghost.style.width = `${srcRect.width}px`;
+    ghost.style.height = `${srcRect.height}px`;
+    ghost.style.objectFit = 'cover';
+    ghost.style.borderRadius = '16px';
+    ghost.style.zIndex = '9999';
+    ghost.style.pointerEvents = 'none';
+    ghost.style.boxShadow = '0 20px 40px -12px rgba(17,19,24,0.45)';
+    document.body.appendChild(ghost);
+
+    const dx = dstRect.left + dstRect.width / 2 - (srcRect.left + srcRect.width / 2);
+    const dy = dstRect.top + dstRect.height / 2 - (srcRect.top + srcRect.height / 2);
+
+    const anim = ghost.animate(
+      [
+        { transform: 'translate(0, 0) scale(1) rotate(0deg)', opacity: 1 },
+        {
+          transform: `translate(${dx * 0.55}px, ${dy * 0.55 - 90}px) scale(0.5) rotate(-8deg)`,
+          opacity: 1,
+          offset: 0.6,
+        },
+        { transform: `translate(${dx}px, ${dy}px) scale(0.06) rotate(14deg)`, opacity: 0.5 },
+      ],
+      { duration: 780, easing: 'cubic-bezier(0.55, 0, 0.3, 1)' }
+    );
+    anim.onfinish = () => {
+      ghost.remove();
+      setCartPulse((p) => p + 1);
+    };
+    anim.oncancel = () => {
+      ghost.remove();
+    };
+  };
+
+  const handleAddToCart = (product: Product, qty = 1, sourceEl?: HTMLElement | null) => {
     setCart((prev) => {
       const existing = prev.find((i) => i.product.id === product.id);
       if (existing) {
@@ -134,6 +188,7 @@ export function App() {
       }
       return [...prev, { product, quantity: Math.min(product.stock, qty) }];
     });
+    flyToCart(product.imageUrl, sourceEl);
     setToastMessage(`Added ${product.name} (${formatNzd(product.priceNzd)}) to Vault Bag`);
   };
 
@@ -185,6 +240,7 @@ export function App() {
       <Header
         cartCount={cartCount}
         cartTotal={cartTotal}
+        cartPulse={cartPulse}
         watchlistCount={watchlist.length}
         showWatchlistOnly={showWatchlistOnly}
         onToggleWatchlistFilter={() => setShowWatchlistOnly((v) => !v)}
@@ -366,15 +422,19 @@ export function App() {
               </button>
             </div>
           ) : (
-            <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {filteredProducts.map((product) => (
+            <div
+              key={selectedEra + selectedCategory + priceTier + sortBy}
+              className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+            >
+              {filteredProducts.map((product, i) => (
                 <ProductCard
                   key={product.id}
                   product={product}
+                  index={i}
                   isWatched={watchlist.includes(product.id)}
                   onToggleWatchlist={handleToggleWatchlist}
                   onInspect={(p) => setInspectedProduct(p)}
-                  onAddToCart={(p) => handleAddToCart(p, 1)}
+                  onAddToCart={(p, el) => handleAddToCart(p, 1, el)}
                 />
               ))}
             </div>
@@ -392,7 +452,7 @@ export function App() {
         isWatched={inspectedProduct ? watchlist.includes(inspectedProduct.id) : false}
         onClose={() => setInspectedProduct(null)}
         onToggleWatchlist={handleToggleWatchlist}
-        onAddToCart={handleAddToCart}
+        onAddToCart={(p, qty, el) => handleAddToCart(p, qty, el)}
       />
 
       <CartDrawer

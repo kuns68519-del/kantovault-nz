@@ -34,7 +34,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex justify-end bg-[#111318]/55 backdrop-blur-xs"
+      className="animate-backdrop-in fixed inset-0 z-50 flex justify-end bg-[#111318]/55 backdrop-blur-xs"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -42,7 +42,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
     >
       <aside
         onClick={(e) => e.stopPropagation()}
-        className="flex h-full w-full max-w-md flex-col bg-[#FAFAF8] shadow-2xl"
+        className="animate-slide-in-right flex h-full w-full max-w-md flex-col bg-[#FAFAF8] shadow-2xl"
       >
         {/* Header */}
         <div className="flex items-center justify-between border-b border-[#ECEAE4] bg-white px-5 py-4">
