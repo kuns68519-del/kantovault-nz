@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowRight, CheckCircle2, MapPin, ShieldCheck, Sparkles } from 'lucide-react';
 import { Era, Product } from './types';
-import { formatNzd } from './products';
+import { PRODUCTS, formatNzd } from './products';
 
 interface HeroProps {
   featuredProducts: Product[];
@@ -41,7 +41,7 @@ export const Hero: React.FC<HeroProps> = ({
           </h1>
 
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#4B5563] sm:text-lg">
-            40 hand-authenticated Wizards of the Coast, EX-era, XY, and Special Edition sealed
+            {PRODUCTS.length} hand-authenticated Wizards of the Coast, EX-era, XY, and Special Edition sealed
             boxes &amp; collector grails—every single piece verified in New Zealand and capped at{' '}
             <span className="font-mono font-semibold text-[#111318]">NZ$1,600</span> or less.
           </p>
@@ -53,7 +53,7 @@ export const Hero: React.FC<HeroProps> = ({
               onClick={onExploreAll}
               className="inline-flex items-center gap-2 rounded-full bg-[#111318] px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#1F242D] active:scale-[0.99]"
             >
-              <span>Explore 40-Item Vault</span>
+              <span>Explore {PRODUCTS.length}-Item Vault</span>
               <ArrowRight className="h-4 w-4 text-[#E5B85B]" />
             </button>
 
@@ -70,7 +70,7 @@ export const Hero: React.FC<HeroProps> = ({
           {/* 3 Concise Vault Metrics */}
           <div className="mt-10 grid max-w-xl grid-cols-3 gap-4 border-t border-[#E9E5DC] pt-6">
             <div>
-              <div className="font-mono text-2xl font-bold text-[#111318]">40</div>
+              <div className="font-mono text-2xl font-bold text-[#111318]">{PRODUCTS.length}</div>
               <div className="mt-0.5 text-xs font-medium text-[#6B7280]">Real Sealed Items</div>
             </div>
             <div>

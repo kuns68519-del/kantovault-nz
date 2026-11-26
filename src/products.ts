@@ -24,7 +24,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 1999,
     era: 'WOTC 1999–2001',
     category: 'Blister & Vintage Pack',
-    priceNzd: 1510,
+    priceNzd: 1560,
     badge: 'Vault Grail',
     shortSpec: 'Tamper-Evident WOTC Cardboard Hangar Blister',
     description:
@@ -44,7 +44,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 1999,
     era: 'WOTC 1999–2001',
     category: 'Blister & Vintage Pack',
-    priceNzd: 1465,
+    priceNzd: 1510,
     badge: 'Vault Grail',
     shortSpec: '1999 WOTC Unlimited • Long-Crimp Verified',
     description:
@@ -64,7 +64,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 2000,
     era: 'WOTC 1999–2001',
     category: 'Blister & Vintage Pack',
-    priceNzd: 1370,
+    priceNzd: 1415,
     badge: '1st Edition',
     shortSpec: '1st Edition WOTC Print • Chase Blaine’s Charizard',
     description:
@@ -84,7 +84,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 2000,
     era: 'WOTC 1999–2001',
     category: 'Theme Deck Box',
-    priceNzd: 1345,
+    priceNzd: 1385,
     badge: 'Most Demanded',
     shortSpec: 'Factory Cellophane & WOTC Pull-Tab Intact',
     description:
@@ -104,7 +104,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 1999,
     era: 'WOTC 1999–2001',
     category: 'Blister & Vintage Pack',
-    priceNzd: 1300,
+    priceNzd: 1340,
     badge: '1st Edition',
     shortSpec: '1999 1st Edition Print • Original Eeveelution Set',
     description:
@@ -124,7 +124,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 2001,
     era: 'WOTC 1999–2001',
     category: 'Blister & Vintage Pack',
-    priceNzd: 1220,
+    priceNzd: 1255,
     badge: 'Vault Grail',
     shortSpec: '2001 Johto Era • Chase Umbreon & Espeon Holos',
     description:
@@ -138,33 +138,13 @@ const RAW_SEEDS: RawProductSeed[] = [
     demandScore: 94,
   },
   {
-    tcgId: 138133,
-    name: 'Fossil Booster Pack (1st Edition)',
-    setName: 'Fossil',
-    year: 1999,
-    era: 'WOTC 1999–2001',
-    category: 'Blister & Vintage Pack',
-    priceNzd: 1120,
-    badge: '1st Edition',
-    shortSpec: '1999 1st Edition • Dragonite & Gengar Foil Chase',
-    description:
-      'First Edition Fossil booster pack from October 1999. Features original Ken Sugimori pack artwork and crisp factory seals—an attainable 1st Edition WOTC milestone under NZ$1,600.',
-    contents: [
-      '1 factory-sealed 1st Edition Fossil booster pack',
-      '11 vintage WOTC cards inside',
-      'Magnetic UV display case',
-    ],
-    stock: 2,
-    demandScore: 93,
-  },
-  {
     tcgId: 138137,
     name: 'Gym Heroes Booster Pack (1st Edition)',
     setName: 'Gym Heroes',
     year: 2000,
     era: 'WOTC 1999–2001',
     category: 'Blister & Vintage Pack',
-    priceNzd: 1090,
+    priceNzd: 1125,
     badge: '1st Edition',
     shortSpec: '2000 1st Edition • Brock, Misty, Erika & Lt. Surge',
     description:
@@ -178,33 +158,13 @@ const RAW_SEEDS: RawProductSeed[] = [
     demandScore: 92,
   },
   {
-    tcgId: 138142,
-    name: 'Neo Genesis Booster Pack (Unlimited)',
-    setName: 'Neo Genesis',
-    year: 2000,
-    era: 'WOTC 1999–2001',
-    category: 'Blister & Vintage Pack',
-    priceNzd: 1035,
-    badge: 'High Demand',
-    shortSpec: '2000 Johto Debut • Chase Lugia #9',
-    description:
-      'The groundbreaking December 2000 expansion that launched Generation II in English. Home to the legendary Lugia #9 holographic card and Johto starter holos.',
-    contents: [
-      '1 factory-sealed 2000 Neo Genesis booster pack',
-      'Clean wrapper & verified factory crimping',
-      'Protective archival booster case',
-    ],
-    stock: 2,
-    demandScore: 94,
-  },
-  {
     tcgId: 138149,
     name: 'Base Set 2 Booster Pack (WOTC Sealed)',
     setName: 'Base Set 2',
     year: 2000,
     era: 'WOTC 1999–2001',
     category: 'Blister & Vintage Pack',
-    priceNzd: 795,
+    priceNzd: 820,
     badge: 'Iconic 2000',
     shortSpec: '2000 Cosmos Holo Print • Charizard & Big Three',
     description:
@@ -224,7 +184,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 1999,
     era: 'WOTC 1999–2001',
     category: 'Theme Deck Box',
-    priceNzd: 755,
+    priceNzd: 780,
     badge: 'Iconic 1999',
     shortSpec: '1999 Sealed Box • Gyarados Holo Cover Art',
     description:
@@ -244,7 +204,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 1999,
     era: 'WOTC 1999–2001',
     category: 'Theme Deck Box',
-    priceNzd: 715,
+    priceNzd: 735,
     badge: 'Iconic 1999',
     shortSpec: '1999 Sealed Box • Hitmonchan Holo Inside',
     description:
@@ -264,7 +224,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 2000,
     era: 'WOTC 1999–2001',
     category: 'Theme Deck Box',
-    priceNzd: 670,
+    priceNzd: 690,
     badge: 'High Demand',
     shortSpec: '2000 Sealed WOTC Box • Lightning Gym Deck',
     description:
@@ -284,7 +244,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 1999,
     era: 'WOTC 1999–2001',
     category: 'Theme Deck Box',
-    priceNzd: 670,
+    priceNzd: 690,
     badge: 'Iconic 1999',
     shortSpec: '1999 Jungle Sealed Box • Holo Vaporeon Cover',
     description:
@@ -304,7 +264,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 1999,
     era: 'WOTC 1999–2001',
     category: 'Theme Deck Box',
-    priceNzd: 630,
+    priceNzd: 650,
     badge: 'Iconic 1999',
     shortSpec: '1999 Sealed Box • Ninetales Holo Inside',
     description:
@@ -324,7 +284,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 2000,
     era: 'WOTC 1999–2001',
     category: 'Theme Deck Box',
-    priceNzd: 630,
+    priceNzd: 650,
     badge: 'High Demand',
     shortSpec: '2000 Johto Sealed Box • Totodile & Chikorita',
     description:
@@ -344,7 +304,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 2000,
     era: 'WOTC 1999–2001',
     category: 'Theme Deck Box',
-    priceNzd: 520,
+    priceNzd: 535,
     badge: 'Collector Classic',
     shortSpec: '2000 Sealed Box • Dark Weezing & Rocket Theme',
     description:
@@ -364,7 +324,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 1999,
     era: 'WOTC 1999–2001',
     category: 'Theme Deck Box',
-    priceNzd: 475,
+    priceNzd: 490,
     badge: 'Iconic 1999',
     shortSpec: '1999 WOTC Box • 1st Edition Machamp Sealed Inside',
     description:
@@ -384,7 +344,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 2003,
     era: 'EX & Classic 2003–2010',
     category: 'Blister & Vintage Pack',
-    priceNzd: 1345,
+    priceNzd: 1385,
     badge: 'Rare EX Era',
     shortSpec: '2003 Nintendo Debut • Hoenn EX Silver Borders',
     description:
@@ -404,7 +364,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 2003,
     era: 'EX & Classic 2003–2010',
     category: 'Theme Deck Box',
-    priceNzd: 840,
+    priceNzd: 865,
     badge: 'Rare EX Era',
     shortSpec: '2003 Sealed Box • Salamence & Dragon-Type Debut',
     description:
@@ -418,33 +378,13 @@ const RAW_SEEDS: RawProductSeed[] = [
     demandScore: 88,
   },
   {
-    tcgId: 98530,
-    name: 'HeartGold & SoulSilver Booster Pack',
-    setName: 'HeartGold & SoulSilver',
-    year: 2010,
-    era: 'EX & Classic 2003–2010',
-    category: 'Blister & Vintage Pack',
-    priceNzd: 755,
-    badge: 'HGSS Grail',
-    shortSpec: '2010 Johto Era • Legend & Prime Chase Cards',
-    description:
-      'Coveted 2010 HeartGold & SoulSilver booster pack featuring Lugia and Ho-Oh era Legend cards and classic silver-foil Prime cards.',
-    contents: [
-      '1 factory-sealed 2010 HGSS booster pack',
-      'Verified crimp & foil wrap integrity',
-      'Magnetic acrylic pack case',
-    ],
-    stock: 2,
-    demandScore: 89,
-  },
-  {
     tcgId: 228805,
     name: 'Diamond & Pearl Theme Deck Box — "Inferno Zone"',
     setName: 'Diamond & Pearl',
     year: 2007,
     era: 'EX & Classic 2003–2010',
     category: 'Theme Deck Box',
-    priceNzd: 670,
+    priceNzd: 690,
     badge: 'Classic DP',
     shortSpec: '2007 Sinnoh Debut • Infernape Cover Box',
     description:
@@ -456,25 +396,6 @@ const RAW_SEEDS: RawProductSeed[] = [
     ],
     stock: 2,
     demandScore: 82,
-  },
-  {
-    tcgId: 98591,
-    name: 'Platinum Base Set Booster Pack',
-    setName: 'Platinum',
-    year: 2009,
-    era: 'EX & Classic 2003–2010',
-    category: 'Blister & Vintage Pack',
-    priceNzd: 655,
-    badge: 'Classic Platinum',
-    shortSpec: '2009 Distortion World • Giratina & LV.X Era',
-    description:
-      '2009 Platinum Base Set booster pack packed with Sinnoh nostalgia and iconic LV.X chase cards including Giratina, Dialga, and Palkia.',
-    contents: [
-      '1 factory-sealed 2009 Platinum booster pack',
-      'Archival UV pack holder',
-    ],
-    stock: 2,
-    demandScore: 84,
   },
   {
     tcgId: 125741,
@@ -503,7 +424,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 2014,
     era: 'XY Era 2014–2016',
     category: 'Collector Tin',
-    priceNzd: 1510,
+    priceNzd: 1560,
     badge: 'Vault Grail',
     shortSpec: '2014 First-Wave XY Tin • Embossed Metal',
     description:
@@ -523,7 +444,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 2015,
     era: 'XY Era 2014–2016',
     category: 'Blister & Vintage Pack',
-    priceNzd: 1510,
+    priceNzd: 1560,
     badge: 'Rare XY',
     shortSpec: '2015 Sealed 3-Pack • Mega Rayquaza & Primal Groudon Set',
     description:
@@ -543,7 +464,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 2016,
     era: 'XY Era 2014–2016',
     category: 'Elite Trainer Box',
-    priceNzd: 1465,
+    priceNzd: 1510,
     badge: 'Most Demanded',
     shortSpec: '2016 Iconic Red/Gold ETB • 8 Evolutions Packs',
     description:
@@ -563,7 +484,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 2016,
     era: 'XY Era 2014–2016',
     category: 'Elite Trainer Box',
-    priceNzd: 1345,
+    priceNzd: 1390,
     badge: 'Most Demanded',
     shortSpec: '2016 Sapphire ETB • Companion to Charizard ETB',
     description:
@@ -583,7 +504,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 2016,
     era: 'XY Era 2014–2016',
     category: 'Collection Box',
-    priceNzd: 1325,
+    priceNzd: 1365,
     badge: '20th Anniv.',
     shortSpec: '2016 20th Anniversary Box • Radiant Collection Packs',
     description:
@@ -603,7 +524,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 2016,
     era: 'XY Era 2014–2016',
     category: 'Collection Box',
-    priceNzd: 1290,
+    priceNzd: 1330,
     badge: 'High Demand',
     shortSpec: '2016 Shiny Mega Gyarados Figure & Oversize Promo',
     description:
@@ -623,7 +544,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 2016,
     era: 'XY Era 2014–2016',
     category: 'Collection Box',
-    priceNzd: 1250,
+    priceNzd: 1285,
     badge: '20th Anniv.',
     shortSpec: '2016 Launch Box • Full-Art Mew & Enamel Pin',
     description:
@@ -643,7 +564,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 2016,
     era: 'XY Era 2014–2016',
     category: 'Collection Box',
-    priceNzd: 1210,
+    priceNzd: 1245,
     badge: 'High Demand',
     shortSpec: '10 Evolutions Packs Inside • Oversize Box',
     description:
@@ -663,7 +584,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 2016,
     era: 'XY Era 2014–2016',
     category: 'Collection Box',
-    priceNzd: 1185,
+    priceNzd: 1225,
     badge: 'High Demand',
     shortSpec: '10 Evolutions Packs Inside • Mewtwo EX Edition',
     description:
@@ -683,7 +604,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 2015,
     era: 'XY Era 2014–2016',
     category: 'Collector Tin',
-    priceNzd: 1175,
+    priceNzd: 1210,
     badge: 'Rare XY',
     shortSpec: '2015 Sealed Tin • Roaring Skies & Primal Clash Packs',
     description:
@@ -703,7 +624,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 2016,
     era: 'XY Era 2014–2016',
     category: 'Collector Tin',
-    priceNzd: 975,
+    priceNzd: 1005,
     badge: 'High Demand',
     shortSpec: '2016 Sealed Metal Tin • Shiny Mewtwo EX Promo',
     description:
@@ -723,7 +644,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 2019,
     era: 'Special & Sun & Moon',
     category: 'Collection Box',
-    priceNzd: 1330,
+    priceNzd: 1370,
     badge: 'Most Demanded',
     shortSpec: '7 Hidden Fates Packs • Shiny Rayquaza GX & Poster',
     description:
@@ -743,7 +664,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 2017,
     era: 'Special & Sun & Moon',
     category: 'Collector Tin',
-    priceNzd: 1290,
+    priceNzd: 1330,
     badge: 'Shining Era',
     shortSpec: '2017 Metal Lunchbox Tin • 5 Shining Legends Packs',
     description:
@@ -763,7 +684,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 2018,
     era: 'Special & Sun & Moon',
     category: 'Collection Box',
-    priceNzd: 990,
+    priceNzd: 1020,
     badge: 'Rare Special Set',
     shortSpec: '2018 Short-Print Special Set • 5 Dragon Majesty Packs',
     description:
@@ -783,7 +704,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 2019,
     era: 'Special & Sun & Moon',
     category: 'Elite Trainer Box',
-    priceNzd: 965,
+    priceNzd: 990,
     badge: 'Most Demanded',
     shortSpec: '10 Hidden Fates Packs • Stained Glass Legendary Birds Promo',
     description:
@@ -803,7 +724,7 @@ const RAW_SEEDS: RawProductSeed[] = [
     year: 2021,
     era: 'Special & Sun & Moon',
     category: 'Elite Trainer Box',
-    priceNzd: 805,
+    priceNzd: 830,
     badge: '25th Anniv.',
     shortSpec: 'PC Exclusive Gold-Foil Box • 13 Celebrations Packs',
     description:

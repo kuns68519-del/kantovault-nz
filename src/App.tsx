@@ -213,7 +213,7 @@ export function App() {
           <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div>
               <span className="font-mono text-xs font-bold uppercase tracking-[0.16em] text-[#9B6D16]">
-                Authenticated Inventory • 40 Sealed Pieces
+                Authenticated Inventory • {PRODUCTS.length} Sealed Pieces
               </span>
               <h2 className="mt-1.5 font-serif text-3xl font-semibold tracking-tight text-[#111318] sm:text-4xl">
                 The New Zealand Sealed Vault
@@ -362,7 +362,7 @@ export function App() {
                 className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-[#111318] px-5 py-2.5 text-xs font-semibold text-white hover:bg-[#C9922B] hover:text-[#111318]"
               >
                 <RotateCcw className="h-3.5 w-3.5" />
-                Show All 40 Products
+                Show All {PRODUCTS.length} Products
               </button>
             </div>
           ) : (

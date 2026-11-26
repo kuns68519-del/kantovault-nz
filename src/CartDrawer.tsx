@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowRight, Minus, Plus, ShieldCheck, ShoppingBag, Trash2, Truck, X } from 'lucide-react';
 import { CartItem } from './types';
-import { formatNzd } from './products';
+import { PRODUCTS, formatNzd } from './products';
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -98,7 +98,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                 Your Vault Bag is empty
               </h3>
               <p className="mt-1 max-w-xs text-xs text-[#6B7280]">
-                Explore our 40 authenticated WOTC, EX, XY, and Sun &amp; Moon sealed boxes capped at
+                Explore our {PRODUCTS.length} authenticated WOTC, EX, XY, and Sun &amp; Moon sealed boxes capped at
                 NZ$1,600.
               </p>
               <button
