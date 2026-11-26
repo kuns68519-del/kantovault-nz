@@ -19,6 +19,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   onAddToCart,
 }) => {
   const [imgFailed, setImgFailed] = useState(false);
+  const [usingFallback, setUsingFallback] = useState(false);
 
   const isGrail =
     product.badge === 'Vault Grail' ||
@@ -60,8 +61,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </button>
       </div>
 
-      {/* Pure-White Studio Product Image Container */}
-      <div className="relative mx-4 mt-2 flex aspect-square items-center justify-center overflow-hidden rounded-xl border border-[#F5F3EE] bg-white p-5">
+      {/* Real Collector Photography Container */}
+      <div className="relative mx-4 mt-2 flex aspect-square items-center justify-center overflow-hidden rounded-xl border border-[#F5F3EE] bg-[#F4F1EA]">
         {!imgFailed ? (
           <img
             src={product.imageUrl}
@@ -70,13 +71,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             referrerPolicy="no-referrer"
             onError={(e) => {
               const img = e.currentTarget;
-              if (img.src !== product.fallbackImageUrl) {
+              if (!usingFallback) {
+                setUsingFallback(true);
                 img.src = product.fallbackImageUrl;
               } else {
                 setImgFailed(true);
               }
             }}
-            className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
+            className={
+              usingFallback
+                ? 'h-full w-full bg-white object-contain p-5 transition-transform duration-500 group-hover:scale-105'
+                : 'h-full w-full object-cover transition-transform duration-500 group-hover:scale-105'
+            }
           />
         ) : (
           <div className="flex flex-col items-center justify-center text-center text-[#9B6D16]">

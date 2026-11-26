@@ -103,7 +103,7 @@ export const Hero: React.FC<HeroProps> = ({
               <button
                 type="button"
                 onClick={() => onInspectProduct(activeProduct)}
-                className="group relative mt-4 flex aspect-[4/3] w-full items-center justify-center overflow-hidden rounded-2xl border border-[#F0EDE6] bg-white p-5"
+                className="group relative mt-4 flex aspect-square w-full items-center justify-center overflow-hidden rounded-2xl border border-[#F0EDE6] bg-[#F4F1EA]"
               >
                 <img
                   src={activeProduct.imageUrl}
@@ -115,7 +115,7 @@ export const Hero: React.FC<HeroProps> = ({
                       img.src = activeProduct.fallbackImageUrl;
                     }
                   }}
-                  className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <span className="absolute bottom-3 right-3 inline-flex items-center gap-1 rounded-full border border-[#E5E0D5] bg-white/95 px-2.5 py-1 text-[11px] font-semibold text-[#111318] shadow-xs backdrop-blur-xs">
                   <CheckCircle2 className="h-3 w-3 text-[#16A34A]" />

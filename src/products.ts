@@ -823,8 +823,8 @@ export const PRODUCTS: Product[] = RAW_SEEDS.map((seed, idx) => ({
   id: `kv-${seed.tcgId}`,
   sku: `KV-${seed.year}-${String(idx + 1).padStart(2, '0')}`,
   condition: 'Factory Sealed • Vault Verified',
-  imageUrl: `https://tcgplayer-cdn.tcgplayer.com/product/${seed.tcgId}_in_1000x1000.jpg`,
-  fallbackImageUrl: `https://tcgplayer-cdn.tcgplayer.com/product/${seed.tcgId}_200w.jpg`,
+  imageUrl: `/products/${seed.tcgId}.webp`,
+  fallbackImageUrl: `https://tcgplayer-cdn.tcgplayer.com/product/${seed.tcgId}_in_1000x1000.jpg`,
 }));
 
 export const ERAS: Era[] = [

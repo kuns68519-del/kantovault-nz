@@ -116,12 +116,12 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                   key={product.id}
                   className="flex gap-3.5 rounded-2xl border border-[#ECEAE4] bg-white p-3.5"
                 >
-                  <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl border border-[#F3F1EC] bg-white p-2">
+                  <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-[#F3F1EC] bg-[#F4F1EA]">
                     <img
                       src={product.imageUrl}
                       alt={product.name}
                       referrerPolicy="no-referrer"
-                      className="max-h-full max-w-full object-contain"
+                      className="h-full w-full object-cover"
                     />
                   </div>
 

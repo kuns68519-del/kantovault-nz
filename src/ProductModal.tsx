@@ -68,7 +68,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
         <div className="grid gap-6 p-5 sm:p-8 lg:grid-cols-12 lg:gap-8">
           {/* Left Studio Gallery */}
           <div className="lg:col-span-5">
-            <div className="flex aspect-square items-center justify-center rounded-2xl border border-[#ECEAE4] bg-white p-6">
+            <div className="flex aspect-square items-center justify-center overflow-hidden rounded-2xl border border-[#ECEAE4] bg-[#F4F1EA]">
               <img
                 src={product.imageUrl}
                 alt={product.name}
@@ -79,7 +79,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
                     img.src = product.fallbackImageUrl;
                   }
                 }}
-                className="max-h-full max-w-full object-contain"
+                className="h-full w-full object-cover"
               />
             </div>
 
