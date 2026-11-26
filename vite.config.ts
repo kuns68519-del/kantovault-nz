@@ -160,7 +160,7 @@ function kantovaultGmcSeoPlugin(): Plugin {
         {
           slug: 'contact',
           title: `Contact Us & Auckland Studio — ${STORE_CONFIG.storeName}`,
-          description: `Contact ${STORE_CONFIG.legalName} in Grey Lynn, Auckland (${STORE_CONFIG.supportPhone}, ${STORE_CONFIG.supportEmail}).`,
+          description: `Contact ${STORE_CONFIG.legalName} in Grey Lynn, Auckland by email at ${STORE_CONFIG.supportEmail}.`,
         },
       ];
 
